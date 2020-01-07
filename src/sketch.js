@@ -1,6 +1,9 @@
 let board;
-const rowCount = 16;
-const colCount = 32;
+const w = 960;
+const h = 640;
+const r = 16;
+const rowCount = 40;
+const colCount = 60;
 
 function setup() {
     createCanvas(960, 640);
@@ -16,6 +19,17 @@ function setup() {
 }
 
 function draw() {
+    clear();
+    drawTable();
+}
 
+function drawTable() {
+    for (let i = 0; i <= rowCount; i++) {
+        line(0, r * i, width, r * i);
+    }
+
+    for (let i = 0; i <= colCount; i++) {
+        line(r * i, 0, r*i, height)
+    }
 }
 
