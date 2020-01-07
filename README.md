@@ -1,4 +1,4 @@
-![GitHub](https://img.shields.io/github/license/mertturkmenoglu/a-star-algorithm.svg) ![GitHub followers](https://img.shields.io/github/followers/mertturkmenoglu.svg?style=social)
+![GitHub](https://img.shields.io/github/license/mertturkmenoglu/a-star-algorithm) ![GitHub followers](https://img.shields.io/github/followers/mertturkmenoglu.svg?style=social)
 # A* Algorithm
 ***
 # Description
