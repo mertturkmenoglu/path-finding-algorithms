@@ -7,6 +7,11 @@
 * A* Algorithm implementation using p5.js
 * Official **p5.js** website: https://p5js.org/
 * See the LICENSE file for details.
+# Run
+* Open `index.html` in your browser.
+* **Left** mouse click will add objects.
+* **Right** mouse click will remove objects.
+* When you are ready, press `s` key.
 # Contributing
 * Fork and clone the repository.
 * Make your contribution.
