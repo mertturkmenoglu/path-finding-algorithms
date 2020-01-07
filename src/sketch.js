@@ -159,16 +159,14 @@ function aStar(s, e) {
         }
 
         for (let child of children) {
-            if (child in closedList) {
+            if (closedList.some(e => e.isEqual(child))) {
                 continue;
             }
 
             child.updateValues(currentNode, endNode);
 
-            for (let i = 0; i < openList.length; i++) {
-                if (child.isEqual(openList[i]) && child.g > openList[i].g) {
-                    continue;
-                }
+            if (openList.some(e => child.isEqual(e) && child.g > e.g)) {
+                continue;
             }
 
             openList.push(child)
