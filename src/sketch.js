@@ -12,8 +12,6 @@ function setup() {
     rowCount = Math.floor((windowHeight - 16) / r);
     colCount = parseInt(windowWidth / r);
 
-    console.log("Width")
-    console.log(innerWidth)
     board = new Array(rowCount);
     for (let i = 0; i < rowCount; i++) {
         board[i] = new Array(colCount).fill(0);
@@ -24,7 +22,8 @@ function setup() {
     textAlign(CENTER, CENTER);
 
     document.addEventListener('contextmenu', e => e.preventDefault());
-    alert("Left click to add an object, right click to remove an object.\nPress 'S' to start path finding.")
+    alert("Left click to add an object, right click to remove an object.\nPress 'S' to start path finding." +
+        "\nPress 'R' to restart.")
 }
 
 function draw() {
@@ -81,7 +80,7 @@ function drawBoard() {
                 ellipse(j*r+(r/2), i*r+(r/2), r, r);
             } else if (value === 4) {
                 fill(228, 186, 34);
-                ellipse(j*r+(r/2), i*r+(r/2), r, r);
+                ellipse(j*r+(r/2), i*r+(r/2), r / 2, r / 2);
             }
         }
     }
@@ -100,6 +99,11 @@ function keyPressed() {
                 gameStatus = 1;
             }
         }
+    }
+
+    if (key === 'r' || key === 'R') {
+        setup();
+        loop();
     }
 }
 
