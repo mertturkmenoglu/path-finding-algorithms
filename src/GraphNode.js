@@ -10,11 +10,15 @@ class GraphNode {
     calculateH(endNode) {
         let a = (this.pos[0] - endNode.pos[0]);
         let b = (this.pos[1] - endNode.pos[1]);
-        this.h = a*a + b*b;
+        this.h = Math.sqrt(a*a + b*b);
     }
 
     calculateG(currentNode) {
-        this.g = currentNode.g + 1;
+        if ( this.pos[0] - currentNode.pos[0] === 0 || this.pos[1] - currentNode.pos[1] === 0 ) {
+            this.g = currentNode.g + 1;
+        } else {
+            this.g = currentNode.g + Math.SQRT2
+        }
     }
 
     calculateF() {
