@@ -145,7 +145,11 @@ function drawBoard() {
 
 function keyPressed() {
     if (key === 's' || key === 'S') {
-        startPathFinding();
+        startPathFinding("astar");
+    }
+
+    if (key === 'd' || key === 'D') {
+        startPathFinding("dijkstra");
     }
 
     if (key === 'c' || key === 'C') {
@@ -172,9 +176,9 @@ function isValidMove(nodePos) {
     return board[nodePos[0]][nodePos[1]] !== 2;
 }
 
-function aStar(s, e) {
-    let startNode = new GraphNode(null, s);
-    let endNode = new GraphNode(null, e);
+function aStar(s, e, type) {
+    let startNode = new GraphNode(type, null, s);
+    let endNode = new GraphNode(type, null, e);
     let openList = [];
     let closedList = [];
     let visitedNo = 5;
@@ -222,7 +226,7 @@ function aStar(s, e) {
                 continue;
             }
 
-            let newNode = new GraphNode(currentNode, nodePos);
+            let newNode = new GraphNode(type, currentNode, nodePos);
             newNode.updateValues(currentNode, endNode);
             neighbors.push(newNode);
         }
@@ -255,6 +259,10 @@ function aStar(s, e) {
     }
 
     return null;
+}
+
+function dijkstra(s, e) {
+    return aStar(s, e, "dijkstra");
 }
 
 function findPoints() {
@@ -335,12 +343,15 @@ function windowResized() {
     loop();
 }
 
-function startPathFinding() {
+function startPathFinding(type) {
     if (statePoints[0] === 0 || statePoints[1] === 0) {
         alert("Please state start and end points");
     } else {
         let points = findPoints();
-        path = aStar(points[0], points[1]);
+        if (type === "astar")
+            path = aStar(points[0], points[1], "astar");
+        else
+            path = dijkstra(points[0], points[1]);
         if (path === null) {
             gameStatus = -1;
         } else {

@@ -1,5 +1,6 @@
 class GraphNode {
-    constructor(parent=null, pos=null) {
+    constructor(type, parent=null, pos=null) {
+        this.type = type;
         this.parent = parent;
         this.pos = pos;
         this.f = 0;
@@ -8,6 +9,11 @@ class GraphNode {
     }
 
     calculateH(endNode) {
+        if (this.type === 'dijkstra') {
+            this.h = 0;
+            return;
+        }
+
         let a = (this.pos[0] - endNode.pos[0]);
         let b = (this.pos[1] - endNode.pos[1]);
         this.h = Math.sqrt(a*a + b*b);
