@@ -5,6 +5,9 @@ let colCount;
 let statePoints;
 let path;
 let gameStatus;
+let maxValue;
+let visitedDrawingCompleted;
+let lastVisitedNo;
 
 function setup() {
     createCanvas(windowWidth, windowHeight - 16);
@@ -31,37 +34,79 @@ function init() {
 
     statePoints = [0, 0];
     gameStatus = 0; // -1: No path 0: Continue 1: Path
+    visitedDrawingCompleted = false;
+    lastVisitedNo = 5;
+    maxValue = rowCount * colCount;
+    noStroke();
 }
 
 function draw() {
     clear();
-    drawTable();
+    drawGrid();
     drawBoard();
 
     if (gameStatus !== 0) {
-        if (gameStatus === -1) {
-            alert("No path");
-        } else {
-            clear();
-            let p = findPoints();
-            let s = p[0];
-            let e = p[1];
+        clear();
+        let p = findPoints();
+        let s = p[0];
+        let e = p[1];
 
-            for (let p of path) {
-                board[p[0]][p[1]] = 4;
-            }
+        board[s[0]][s[1]] = 1;
+        board[e[0]][e[1]] = 3;
 
-            board[s[0]][s[1]] = 1;
-            board[e[0]][e[1]] = 3;
+        drawGrid();
 
-            drawTable();
-            drawBoard()
+        visitedDrawingCompleted = drawVisited();
+
+        if (visitedDrawingCompleted) {
+            drawPath();
+            noLoop();
         }
-        noLoop();
+
+        drawBoard();
     }
 }
 
-function drawTable() {
+function drawVisited() {
+    for (let i = 0; i < rowCount; i++) {
+        for (let j = 0; j < colCount; j++) {
+            let value = board[i][j];
+            if (value < 5) {
+                continue;
+            }
+
+            if (value <= lastVisitedNo) {
+                let a = map(value, maxValue, 5, 255, 100);
+                fill(30, a, a);
+                rect(j * r, i * r, r - 1, r - 1);
+            }
+        }
+    }
+
+    lastVisitedNo++;
+
+    return lastVisitedNo >= maxValue;
+}
+
+function drawPath() {
+    if (path === null) {
+        alert("No path");
+        return;
+    }
+    stroke(228, 186, 34);
+    strokeWeight(6);
+    for (let i = 0; i < path.length-1; i++) {
+        let currx = path[i][1] * r + (r / 2);
+        let curry = path[i][0] * r + (r / 2);
+        let nextx = path[i + 1][1] * r + (r / 2);
+        let nexty = path[i + 1][0] * r + (r / 2);
+        line(currx, curry, nextx, nexty);
+    }
+    noStroke();
+    strokeWeight(1);
+}
+
+function drawGrid() {
     stroke(150);
     for (let i = 0; i <= rowCount; i++) {
         line(0, r * i, width, r * i);
@@ -70,6 +115,7 @@ function drawTable() {
     for (let i = 0; i <= colCount; i++) {
         line(r * i, 0, r*i, height);
     }
+    noStroke();
 }
 
 function drawBoard() {
@@ -86,15 +132,9 @@ function drawBoard() {
                 rect(j*r, i*r, r-1, r-1);
             } else if (value === 3) { // End
                 fill(222, 16, 50);
-                ellipse(j*r+(r/2), i*r+(r/2), 2 * r / 3, 2 * r / 3);
+                ellipse(j*r+(r/2), i*r+(r/2), r * 0.9, r * 0.9);
                 fill(255);
                 text("E", j*r+(r/2), i*r+(r/2))
-            } else if (value === 4) { // Path
-                fill(228, 186, 34);
-                ellipse(j*r+(r/2), i*r+(r/2), r / 2, r / 2);
-            } else if (value === 5) { // Visited
-                fill(190);
-                rect(j*r, i*r, r-1, r-1);
             }
         }
     }
@@ -124,7 +164,7 @@ function keyPressed() {
             for (let j = 0; j < colCount; j++) {
                 if (!(i === s[0] && j === s[1])) {
                     if (!(i === e[0] && j === e[1])) {
-                        if (board[i][j] === 4 || board[i][j] === 5) {
+                        if (board[i][j] === 4 || board[i][j] >= 5) {
                             board[i][j] = 0;
                         }
                     }
@@ -132,7 +172,11 @@ function keyPressed() {
             }
         }
 
+        visitedDrawingCompleted = false;
+        lastVisitedNo = 5;
         gameStatus = 0;
+        maxValue = rowCount * colCount;
+        noStroke();
         loop();
     }
 
@@ -160,6 +204,7 @@ function aStar(s, e) {
     let endNode = new GraphNode(null, e);
     let openList = [];
     let closedList = [];
+    let visitedNo = 5;
 
     openList.push(startNode);
     let loopCount = 0;
@@ -190,6 +235,7 @@ function aStar(s, e) {
                 curr = curr.parent;
             }
 
+            maxValue = visitedNo;
             return path.reverse();
         }
 
@@ -212,7 +258,8 @@ function aStar(s, e) {
             if (!n.isEqual(startNode) && !n.isEqual(endNode)) {
                 let cp = n.pos;
                 if (board[cp[0]][cp[1]] === 0) {
-                    board[cp[0]][cp[1]] = 5;
+                    board[cp[0]][cp[1]] = visitedNo;
+                    visitedNo++;
                 }
             }
 
