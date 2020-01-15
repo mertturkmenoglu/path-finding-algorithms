@@ -152,6 +152,10 @@ function keyPressed() {
         startPathFinding("dijkstra");
     }
 
+    if (key === 'b' || key === 'B') {
+        startPathFinding('bfs');
+    }
+
     if (key === 'c' || key === 'C') {
         clearPath();
     }
@@ -265,6 +269,69 @@ function dijkstra(s, e) {
     return aStar(s, e, "dijkstra");
 }
 
+function bfs(s, e) {
+    let startNode = new GraphNode("", null, s);
+    let endNode = new GraphNode("", null, e);
+    let openList = [];
+    let closedList = [];
+    openList.push(startNode);
+    let visitedNo = 5;
+
+    while (openList.length > 0) {
+        let currentNode = openList.shift();
+        closedList.push(currentNode);
+
+        // Find a path
+        if (currentNode.isEqual(endNode)) {
+            console.log("aaaaa");
+            let path = [];
+            let curr = currentNode;
+
+            while (curr != null) {
+                path.push(curr.pos);
+                curr = curr.parent;
+            }
+
+            maxValue = visitedNo;
+            return path.reverse();
+        }
+
+        let neighbors = [];
+        let moves = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, 1]];
+
+        for (let m of moves) {
+            let nodePos = [currentNode.pos[0] + m[0], currentNode.pos[1] + m[1]];
+
+            if (!isValidMove(nodePos)) {
+                continue;
+            }
+
+            let newNode = new GraphNode("", currentNode, nodePos);
+            neighbors.push(newNode);
+        }
+
+        for (let n of neighbors) {
+            if (!n.isEqual(startNode) && !n.isEqual(endNode)) {
+                let cp = n.pos;
+                if (board[cp[0]][cp[1]] === 0) {
+                    board[cp[0]][cp[1]] = visitedNo;
+                    visitedNo++;
+                }
+            }
+
+
+            if (closedList.some(e => e.isEqual(n)) || openList.some(e => e.isEqual(n))) {
+                continue;
+            }
+
+            n.parent = currentNode;
+            openList.push(n);
+        }
+    }
+
+    return null;
+}
+
 function findPoints() {
     let s;
     let e;
@@ -350,8 +417,11 @@ function startPathFinding(type) {
         let points = findPoints();
         if (type === "astar")
             path = aStar(points[0], points[1], "astar");
-        else
+        else if (type === 'dijkstra')
             path = dijkstra(points[0], points[1]);
+        else if (type === 'bfs')
+            path = bfs(points[0], points[1]);
+
         if (path === null) {
             gameStatus = -1;
         } else {
