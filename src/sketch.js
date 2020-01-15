@@ -23,16 +23,19 @@ function setup() {
         "\nPress 'R' to reset everything." +
         "\nPress 'C' to clear path.");
 
+    boardInit();
     init();
 }
 
-function init() {
+function boardInit() {
     board = new Array(rowCount);
     for (let i = 0; i < rowCount; i++) {
         board[i] = new Array(colCount).fill(0);
     }
-
     statePoints = [0, 0];
+}
+
+function init() {
     gameStatus = 0; // -1: No path 0: Continue 1: Path
     visitedDrawingCompleted = false;
     lastVisitedNo = 5;
@@ -142,45 +145,15 @@ function drawBoard() {
 
 function keyPressed() {
     if (key === 's' || key === 'S') {
-        if (statePoints[0] === 0 || statePoints[1] === 0) {
-            alert("Please state start and end points");
-        } else {
-            let points = findPoints();
-            path = aStar(points[0], points[1]);
-            if (path === null) {
-                gameStatus = -1;
-            } else {
-                gameStatus = 1;
-            }
-        }
+        startPathFinding();
     }
 
     if (key === 'c' || key === 'C') {
-        let points = findPoints();
-        let s = points[0];
-        let e = points[1];
-
-        for (let i = 0; i < rowCount; i++) {
-            for (let j = 0; j < colCount; j++) {
-                if (!(i === s[0] && j === s[1])) {
-                    if (!(i === e[0] && j === e[1])) {
-                        if (board[i][j] === 4 || board[i][j] >= 5) {
-                            board[i][j] = 0;
-                        }
-                    }
-                }
-            }
-        }
-
-        visitedDrawingCompleted = false;
-        lastVisitedNo = 5;
-        gameStatus = 0;
-        maxValue = rowCount * colCount;
-        noStroke();
-        loop();
+        clearPath();
     }
 
     if (key === 'r' || key === 'R') {
+        boardInit();
         init();
         loop();
     }
@@ -302,6 +275,8 @@ function findPoints() {
 }
 
 function mousePressed() {
+    if (gameStatus !== 0)
+        return;
     // Invalid clicks
     if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height)
         return;
@@ -350,4 +325,47 @@ function mousePressed() {
 function mouseDragged() {
     mousePressed();
     return false;
+}
+
+function windowResized() {
+    resizeCanvas(window.innerWidth, window.innerHeight - 16);
+    clearPath();
+    boardInit();
+    init();
+    loop();
+}
+
+function startPathFinding() {
+    if (statePoints[0] === 0 || statePoints[1] === 0) {
+        alert("Please state start and end points");
+    } else {
+        let points = findPoints();
+        path = aStar(points[0], points[1]);
+        if (path === null) {
+            gameStatus = -1;
+        } else {
+            gameStatus = 1;
+        }
+    }
+}
+
+function clearPath() {
+    let points = findPoints();
+    let s = points[0];
+    let e = points[1];
+
+    for (let i = 0; i < rowCount; i++) {
+        for (let j = 0; j < colCount; j++) {
+            if (!(i === s[0] && j === s[1])) {
+                if (!(i === e[0] && j === e[1])) {
+                    if (board[i][j] === 4 || board[i][j] >= 5) {
+                        board[i][j] = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    init();
+    loop();
 }
