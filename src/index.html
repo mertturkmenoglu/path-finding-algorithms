@@ -9,7 +9,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.sound.min.js"></script>
 </head>
 <body>
-    <script src="sketch.js"></script>
-    <script src="GraphNode.js"></script>
+    <div id="nav-bar" style="height: 64px">
+        <label for="alg-select">Algorithm:</label>
+        <select id="alg-select">
+            <option value="A*">A*</option>
+            <option value="Dijkstra">Dijkstra</option>
+            <option value="BFS">BFS</option>
+        </select>
+        <button id="maze-button">Generate Maze</button>
+        <button id="reset-button">Reset</button>
+        <button id="clear-button">Clear</button>
+        <button id="start-button">Start</button>
+        <button id="help-button">Help</button>
+    </div>
+    <div id="container">
+        <script src="sketch.js"></script>
+        <script src="GraphNode.js"></script>
+    </div>
 </body>
 </html>

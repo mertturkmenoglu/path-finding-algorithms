@@ -8,16 +8,16 @@ let gameStatus;
 let maxValue;
 let visitedDrawingCompleted;
 let lastVisitedNo;
+let cnv;
+let algSelect;
+let mazeButton;
+let startButton;
+let helpButton;
+let clearButton;
+let resetButton;
+let currAlg = 'astar';
 
-function setup() {
-    createCanvas(windowWidth, windowHeight - 16);
-
-    rowCount = Math.floor((windowHeight - 16) / r);
-    colCount = parseInt(windowWidth / r);
-
-    textAlign(CENTER, CENTER);
-
-    document.addEventListener('contextmenu', e => e.preventDefault());
+function giveInfo() {
     alert("Left click to add an object, right click to remove an object." +
         "\nPress 'S' to start path finding." +
         "\nPress 'R' to reset everything." +
@@ -25,6 +25,49 @@ function setup() {
         "\nPress 'B' to use BFS algorithm." +
         "\nPress 'G' to generate maze." +
         "\nPress 'C' to clear path.");
+}
+
+function reset() {
+    boardInit();
+    init();
+    loop();
+}
+
+function setup() {
+    cnv = createCanvas(windowWidth, windowHeight - 64);
+    cnv.style('display', 'block');
+    rowCount = parseInt(height / r);
+    colCount = parseInt(width / r)+1;
+
+    algSelect = document.getElementById("alg-select");
+
+    mazeButton = document.getElementById("maze-button");
+    resetButton = document.getElementById("reset-button");
+    clearButton = document.getElementById("clear-button");
+    startButton = document.getElementById("start-button");
+    helpButton  = document.getElementById("help-button");
+
+    mazeButton.onclick = generateMaze;
+    resetButton.onclick = reset;
+    clearButton.onclick = clearPath;
+    startButton.onclick = function () {
+        let sel = algSelect.value;
+        if (sel === 'A*') {
+            currAlg = 'astar';
+        } else if (sel === 'Dijkstra') {
+            currAlg = 'dijkstra';
+        } else if (sel === 'BFS') {
+            currAlg = 'bfs';
+        }
+
+        clearPath();
+        startPathFinding(currAlg);
+    };
+    helpButton.onclick = giveInfo;
+
+    textAlign(CENTER, CENTER);
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
 
     boardInit();
     init();
@@ -33,7 +76,7 @@ function setup() {
 function boardInit() {
     board = new Array(rowCount);
     for (let i = 0; i < rowCount; i++) {
-        board[i] = new Array(colCount).fill(0);
+        board[i] = new Array(colCount+1).fill(0);
     }
     statePoints = [0, 0];
 }
@@ -412,7 +455,7 @@ function mouseDragged() {
 }
 
 function windowResized() {
-    resizeCanvas(window.innerWidth, window.innerHeight - 16);
+    setup();
     clearPath();
     boardInit();
     init();
