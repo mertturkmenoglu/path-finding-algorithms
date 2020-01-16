@@ -104,15 +104,13 @@ function draw() {
         board[e[0]][e[1]] = 3;
 
         drawGrid();
-
+        drawBoard();
         visitedDrawingCompleted = drawVisited();
 
         if (visitedDrawingCompleted) {
             drawPath();
             noLoop();
         }
-
-        drawBoard();
     }
 }
 
@@ -173,17 +171,23 @@ function drawBoard() {
             let value = board[i][j];
             if (value === 1) { // Start
                 fill(188, 16, 222);
-                ellipse(j*r+(r/2), i*r+(r/2), r * 0.9, r * 0.9);
-                fill(255);
-                text("S", j*r+(r/2), i*r+(r/2))
+                //ellipse(j*r+(r/2), i*r+(r/2), r * 0.9, r * 0.9);
+                //fill(255);
+                textSize(24);
+                stroke(2);
+                text("S", j*r+(r/2), i*r+(r/2));
+                noStroke();
             } else if (value === 2) { // Obstacle
                 fill(100);
                 rect(j*r, i*r, r-1, r-1);
             } else if (value === 3) { // End
                 fill(222, 16, 50);
-                ellipse(j*r+(r/2), i*r+(r/2), r * 0.9, r * 0.9);
-                fill(255);
-                text("E", j*r+(r/2), i*r+(r/2))
+                //ellipse(j*r+(r/2), i*r+(r/2), r * 0.9, r * 0.9);
+                //fill(255);
+                textSize(24);
+                stroke(2);
+                text("E", j*r+(r/2), i*r+(r/2));
+                noStroke()
             }
         }
     }
