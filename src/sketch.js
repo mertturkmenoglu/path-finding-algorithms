@@ -23,6 +23,7 @@ function setup() {
         "\nPress 'R' to reset everything." +
         "\nPress 'D' to use Dijkstra algorithm." +
         "\nPress 'B' to use BFS algorithm." +
+        "\nPress 'G' to generate maze." +
         "\nPress 'C' to clear path.");
 
     boardInit();
@@ -99,7 +100,7 @@ function drawPath() {
         return;
     }
     stroke(228, 186, 34);
-    strokeWeight(6);
+    strokeWeight(Math.sqrt(r));
     for (let i = 0; i < path.length-1; i++) {
         let currx = path[i][1] * r + (r / 2);
         let curry = path[i][0] * r + (r / 2);
@@ -167,19 +168,25 @@ function keyPressed() {
         init();
         loop();
     }
+
+    if (key === 'g' || key === 'G') {
+        generateMaze();
+    }
+}
+
+function isOnBoard(nodePos) {
+    return !(nodePos[0] > (rowCount - 1) ||
+            nodePos[0] < 0 ||
+            nodePos[1] > (colCount  - 1) ||
+            nodePos[1] < 0);
+}
+
+function isWalkable(nodePos) {
+    return board[nodePos[0]][nodePos[1]] !== 2;
 }
 
 function isValidMove(nodePos) {
-    // Is it on board?
-    if (nodePos[0] > (rowCount - 1) ||
-        nodePos[0] < 0 ||
-        nodePos[1] > (colCount  - 1) ||
-        nodePos[1] < 0)
-
-        return false;
-
-    // Can we move here?
-    return board[nodePos[0]][nodePos[1]] !== 2;
+    return (isOnBoard(nodePos) && isWalkable(nodePos));
 }
 
 function aStar(s, e, type) {
@@ -451,4 +458,82 @@ function clearPath() {
 
     init();
     loop();
+}
+
+function generateMaze() {
+    dfs();
+}
+
+function dfs() {
+    boardInit();
+    init();
+
+    // Make walls
+    for (let i = 0 ; i < rowCount; i += 2) {
+        for (let j = 0; j < colCount; j++) {
+            board[i][j] = 2;
+        }
+    }
+
+    for (let i = 0; i < rowCount; i++) {
+        for (let j = 0; j < colCount; j += 2) {
+            board[i][j] = 2;
+        }
+    }
+
+    // Choose point
+    let sy = 1; //Math.floor(random(0, rowCount/2 - 1)) * 2 + 1;
+    let sx = 1; //Math.floor(random(0, colCount/2 - 1)) * 2 + 1;
+
+    board[sy][sx] = -1; // -1: Visited
+
+    let stack = [];
+    stack.push([sy, sx]);
+
+    while (stack.length > 0) {
+        let e = stack.pop();
+
+        let neighbors = [];
+        let moves = [[0, -2], [0, 2], [-2, 0], [2, 0]];
+
+        for (let m of moves) {
+            let nodePos = [e[0] + m[0], e[1] + m[1]];
+
+            if (!isOnBoard(nodePos) || board[nodePos[0]][nodePos[1]] === -1) {
+                continue;
+            }
+
+            neighbors.push(nodePos);
+        }
+
+        if (neighbors.length > 0) {
+            stack.push(e);
+            let randNeighbor = random(neighbors);
+
+            if (randNeighbor[0] === e[0]) { // Same row
+                if (randNeighbor[1] > e[1]) {
+                    board[e[0]][e[1] + 1] = 0;
+                } else {
+                    board[e[0]][e[1] - 1] = 0;
+                }
+            } else { // Same column
+                if (randNeighbor[0] > e[0]) {
+                    board[e[0] + 1][e[1]] = 0;
+                } else {
+                    board[e[0] - 1][e[1]] = 0;
+                }
+            }
+
+            board[randNeighbor[0]][randNeighbor[1]] = -1;
+            stack.push(randNeighbor);
+        }
+    }
+
+    for (let i = 0; i < rowCount; i++) {
+        for (let j = 0; j < colCount; j++) {
+            if (board[i][j] === -1) {
+                board[i][j] = 0;
+            }
+        }
+    }
 }
