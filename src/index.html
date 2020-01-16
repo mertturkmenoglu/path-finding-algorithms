@@ -10,17 +10,21 @@
 </head>
 <body>
     <div id="nav-bar" style="height: 64px">
-        <label for="alg-select">Algorithm:</label>
-        <select id="alg-select">
-            <option value="A*">A*</option>
-            <option value="Dijkstra">Dijkstra</option>
-            <option value="BFS">BFS</option>
-        </select>
-        <button id="maze-button">Generate Maze</button>
-        <button id="reset-button">Reset</button>
-        <button id="clear-button">Clear</button>
-        <button id="start-button">Start</button>
-        <button id="help-button">Help</button>
+        <div class="nav-bar-alg-selection">
+            <label for="alg-select" class="select-text">Algorithm:</label>
+            <select id="alg-select" class="nav-bar-select">
+                <option value="A*" class="nav-bar-select-item">A*</option>
+                <option value="Dijkstra" class="nav-bar-select-item">Dijkstra</option>
+                <option value="BFS" class="nav-bar-select-item">BFS</option>
+            </select>
+        </div>
+        <div class="nav-bar-button-group">
+            <button id="maze-button"  class="nav-bar-button-item">Generate Maze</button>
+            <button id="reset-button" class="nav-bar-button-item">Reset</button>
+            <button id="clear-button" class="nav-bar-button-item">Clear</button>
+            <button id="start-button" class="nav-bar-button-item">Start</button>
+            <button id="help-button"  class="nav-bar-button-item">Help</button>
+        </div>
     </div>
     <div id="container">
         <script src="sketch.js"></script>

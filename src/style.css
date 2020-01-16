@@ -2,3 +2,45 @@
     margin: 0;
     padding: 0;
 }
+
+#nav-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav-bar-button-item {
+    text-align: center;
+    /*text-decoration: none;*/
+    display: inline-block;
+    font-size: 32px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: 2px solid #555555;
+}
+
+.nav-bar-button-item:hover {
+    background-color: #555555;
+    color: white;
+}
+
+.nav-bar-select {
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    font-size: 32px;
+}
+
+.nav-bar.nav-bar-select-item {
+    font-size: 32px;
+}
+
+.select-text {
+    color: #555555;
+    font-size: 32px;
+}
