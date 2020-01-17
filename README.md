@@ -1,7 +1,7 @@
 ![GitHub](https://img.shields.io/github/license/mertturkmenoglu/a-star-algorithm) ![GitHub followers](https://img.shields.io/github/followers/mertturkmenoglu.svg?style=social)
 # Path Finding Algorithms
 ***
-<img src="assets/example.png" alt="Example" width="480" height="320" />
+<img src="assets/example.gif" alt="Example" width="480" height="320" />
 
 # Description
 * Path finding algorithms implementation using **p5.js**
