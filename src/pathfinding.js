@@ -7,8 +7,8 @@ function startPathFinding(type) {
         alert("Please state start and end points");
     } else {
         let points = findPoints();
-        if (type === "astar")
-            path = aStar(points[0], points[1], "astar");
+        if (type === Algorithms["A*"])
+            path = aStar(points[0], points[1], type);
         else if (type === 'dijkstra')
             path = dijkstra(points[0], points[1]);
         else if (type === 'bfs')
@@ -30,7 +30,7 @@ function isOnBoard(nodePos) {
 }
 
 function isWalkable(nodePos) {
-    return board[nodePos[0]][nodePos[1]] !== 2;
+    return board[nodePos[0]][nodePos[1]] !== Cell.obstacle;
 }
 
 function isValidMove(nodePos) {
@@ -43,9 +43,9 @@ function findPoints() {
 
     for (let i = 0; i < rowCount; i++) {
         for (let j = 0; j < colCount; j++) {
-            if (board[i][j] === 1) {
+            if (board[i][j] === Cell.start) {
                 s = [i, j];
-            } else if (board[i][j] === 3) {
+            } else if (board[i][j] === Cell.end) {
                 e = [i, j];
             }
         }
@@ -112,7 +112,7 @@ function aStar(s, e, type) {
         for (let n of neighbors) {
             if (!n.isEqual(startNode) && !n.isEqual(endNode)) {
                 let cp = n.pos;
-                if (board[cp[0]][cp[1]] === 0) {
+                if (board[cp[0]][cp[1]] === Cell.empty) {
                     board[cp[0]][cp[1]] = visitedNo;
                     visitedNo++;
                 }
@@ -157,7 +157,6 @@ function bfs(s, e) {
 
         // Find a path
         if (currentNode.isEqual(endNode)) {
-            console.log("aaaaa");
             let path = [];
             let curr = currentNode;
 
@@ -187,7 +186,7 @@ function bfs(s, e) {
         for (let n of neighbors) {
             if (!n.isEqual(startNode) && !n.isEqual(endNode)) {
                 let cp = n.pos;
-                if (board[cp[0]][cp[1]] === 0) {
+                if (board[cp[0]][cp[1]] === Cell.empty) {
                     board[cp[0]][cp[1]] = visitedNo;
                     visitedNo++;
                 }
@@ -217,21 +216,21 @@ function dfs() {
     // Make walls
     for (let i = 0 ; i < rowCount; i += 2) {
         for (let j = 0; j < colCount; j++) {
-            board[i][j] = 2;
+            board[i][j] = Cell.obstacle;
         }
     }
 
     for (let i = 0; i < rowCount; i++) {
         for (let j = 0; j < colCount; j += 2) {
-            board[i][j] = 2;
+            board[i][j] = Cell.obstacle;
         }
     }
 
     // Choose point
-    let sy = 1; //Math.floor(random(0, rowCount/2 - 1)) * 2 + 1;
-    let sx = 1; //Math.floor(random(0, colCount/2 - 1)) * 2 + 1;
+    let sy = 1;
+    let sx = 1;
 
-    board[sy][sx] = -1; // -1: Visited
+    board[sy][sx] = Cell.visited;
 
     let stack = [];
     stack.push([sy, sx]);
@@ -245,7 +244,7 @@ function dfs() {
         for (let m of moves) {
             let nodePos = [e[0] + m[0], e[1] + m[1]];
 
-            if (!isOnBoard(nodePos) || board[nodePos[0]][nodePos[1]] === -1) {
+            if (!isOnBoard(nodePos) || board[nodePos[0]][nodePos[1]] === Cell.visited) {
                 continue;
             }
 
@@ -258,19 +257,19 @@ function dfs() {
 
             if (randNeighbor[0] === e[0]) { // Same row
                 if (randNeighbor[1] > e[1]) {
-                    board[e[0]][e[1] + 1] = 0;
+                    board[e[0]][e[1] + 1] = Cell.empty;
                 } else {
-                    board[e[0]][e[1] - 1] = 0;
+                    board[e[0]][e[1] - 1] = Cell.empty;
                 }
             } else { // Same column
                 if (randNeighbor[0] > e[0]) {
-                    board[e[0] + 1][e[1]] = 0;
+                    board[e[0] + 1][e[1]] = Cell.empty;
                 } else {
-                    board[e[0] - 1][e[1]] = 0;
+                    board[e[0] - 1][e[1]] = Cell.empty;
                 }
             }
 
-            board[randNeighbor[0]][randNeighbor[1]] = -1;
+            board[randNeighbor[0]][randNeighbor[1]] = Cell.visited;
             stack.push(randNeighbor);
         }
     }
@@ -278,7 +277,7 @@ function dfs() {
     for (let i = 0; i < rowCount; i++) {
         for (let j = 0; j < colCount; j++) {
             if (board[i][j] === -1) {
-                board[i][j] = 0;
+                board[i][j] = Cell.empty;
             }
         }
     }
@@ -293,8 +292,8 @@ function clearPath() {
         for (let j = 0; j < colCount; j++) {
             if (!(i === s[0] && j === s[1])) {
                 if (!(i === e[0] && j === e[1])) {
-                    if (board[i][j] === 4 || board[i][j] >= 5) {
-                        board[i][j] = 0;
+                    if (board[i][j] === Cell.path || board[i][j] >= 5) {
+                        board[i][j] = Cell.empty;
                     }
                 }
             }

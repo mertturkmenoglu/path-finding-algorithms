@@ -19,13 +19,7 @@ function initDOM() {
     clearButton.onclick = clearPath;
     startButton.onclick = function () {
         let sel = algSelect.value;
-        if (sel === 'A*') {
-            currAlg = 'astar';
-        } else if (sel === 'Dijkstra') {
-            currAlg = 'dijkstra';
-        } else if (sel === 'BFS') {
-            currAlg = 'bfs';
-        }
+        currAlg = Algorithms[sel];
 
         clearPath();
         startPathFinding(currAlg);

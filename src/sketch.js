@@ -6,7 +6,7 @@ let statePoints;
 let visitedDrawingCompleted;
 let lastVisitedNo;
 let cnv;
-let currAlg = 'astar';
+let currAlg;
 
 function setup() {
     cnv = createCanvas(windowWidth, windowHeight - 64);
@@ -15,6 +15,7 @@ function setup() {
 
     rowCount = parseInt(height / r);
     colCount = parseInt(width / r)+1;
+    currAlg = Algorithms["A*"];
 
     initDOM();
     boardInit();
@@ -26,14 +27,14 @@ function draw() {
     drawGrid();
     drawBoard();
 
-    if (gameStatus !== 0) {
+    if (gameStatus !== GameStatus.continue) {
         clear();
         let p = findPoints();
         let s = p[0];
         let e = p[1];
 
-        board[s[0]][s[1]] = 1;
-        board[e[0]][e[1]] = 3;
+        board[s[0]][s[1]] = Cell.start;
+        board[e[0]][e[1]] = Cell.end;
 
         drawGrid();
         drawBoard();
@@ -49,13 +50,13 @@ function draw() {
 function boardInit() {
     board = new Array(rowCount);
     for (let i = 0; i < rowCount; i++) {
-        board[i] = new Array(colCount+1).fill(0);
+        board[i] = new Array(colCount+1).fill(Cell.empty);
     }
     statePoints = [0, 0];
 }
 
 function init() {
-    gameStatus = 0; // -1: No path 0: Continue 1: Path
+    gameStatus = GameStatus.continue;
     visitedDrawingCompleted = false;
     lastVisitedNo = 5;
     maxValue = rowCount * colCount;

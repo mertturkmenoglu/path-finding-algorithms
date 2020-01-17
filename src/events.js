@@ -27,7 +27,7 @@ function keyPressed() {
 }
 
 function mousePressed() {
-    if (gameStatus !== 0)
+    if (gameStatus !== GameStatus.continue)
         return;
     // Invalid clicks
     if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height)
@@ -37,37 +37,27 @@ function mousePressed() {
     let i = parseInt(mouseY / r);
     let j = parseInt(mouseX / r);
 
-    // Empty: 0
-    // Start: 1
-    // Obstacle: 2
-    // End: 3
-
-    // LEFT: Add object
-    if (mouseButton === LEFT) {
-        // Check if the cell is empty
-        if (board[i][j] === 0) {
+    if (mouseButton === LEFT) { // LEFT: Add object
+        if (board[i][j] === Cell.empty) {
             if (statePoints[0] === 0) {
-                board[i][j] = 1;
+                board[i][j] = Cell.start;
                 statePoints[0] = 1;
             } else if (statePoints[1] === 0) {
-                board[i][j] = 3;
+                board[i][j] = Cell.end;
                 statePoints[1] = 1;
             } else {
-                board[i][j] = 2;
+                board[i][j] = Cell.obstacle;
             }
         }
-    } else if (mouseButton === RIGHT) {
-        // RIGHT: Remove object
-
-        // Check if the cell is start
-        if (board[i][j] === 1) {
+    } else if (mouseButton === RIGHT) { // RIGHT: Remove object
+        if (board[i][j] === Cell.start) {
             board[i][j] = 0;
-            statePoints[0] = 0;
-        } else if (board[i][j] === 3) {
-            board[i][j] = 0;
+            statePoints[0] = Cell.empty;
+        } else if (board[i][j] === Cell.end) {
+            board[i][j] = Cell.empty;
             statePoints[1] = 0;
         } else if (board[i][j] === 2) {
-            board[i][j] = 0;
+            board[i][j] = Cell.empty;
         }
     }
 
