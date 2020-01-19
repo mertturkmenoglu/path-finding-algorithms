@@ -1,13 +1,13 @@
 function keyPressed() {
     switch (key.toLowerCase()) {
         case 's':
-            startPathFinding('astar');
+            startPathFinding(Algorithms["A*"], currHeuristic);
             break;
         case 'd':
-            startPathFinding('dijkstra');
+            startPathFinding(Algorithms.Dijkstra, currHeuristic);
             break;
         case 'b':
-            startPathFinding('bfs');
+            startPathFinding(Algorithms.BFS, currHeuristic);
             break;
         case 'c':
             clearPath();

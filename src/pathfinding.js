@@ -2,16 +2,16 @@ let path;
 let gameStatus;
 let maxValue;
 
-function startPathFinding(type) {
+function startPathFinding(algorithm, heuristic) {
     if (pointStates[0] === 0 || pointStates[1] === 0) {
         alert("Please state start and end points");
     } else {
         let points = findPoints();
-        if (type === Algorithms["A*"])
-            path = aStar(points[0], points[1], type);
-        else if (type === 'dijkstra')
+        if (algorithm === Algorithms["A*"])
+            path = aStar(points[0], points[1], algorithm, heuristic);
+        else if (algorithm === 'dijkstra')
             path = dijkstra(points[0], points[1]);
-        else if (type === 'bfs')
+        else if (algorithm === 'bfs')
             path = bfs(points[0], points[1]);
 
         if (path === null) {
@@ -54,9 +54,9 @@ function findPoints() {
     return [s, e];
 }
 
-function aStar(s, e, type) {
-    let startNode = new GraphNode(type, null, s);
-    let endNode = new GraphNode(type, null, e);
+function aStar(s, e, algorithm, h) {
+    let startNode = new GraphNode(algorithm, h, null, s);
+    let endNode = new GraphNode(algorithm, h, null, e);
     let openList = [];
     let closedList = [];
     let visitedNo = 5;
@@ -104,7 +104,7 @@ function aStar(s, e, type) {
                 continue;
             }
 
-            let newNode = new GraphNode(type, currentNode, nodePos);
+            let newNode = new GraphNode(algorithm, h, currentNode, nodePos);
             newNode.updateValues(currentNode, endNode);
             neighbors.push(newNode);
         }
@@ -144,8 +144,8 @@ function dijkstra(s, e) {
 }
 
 function bfs(s, e) {
-    let startNode = new GraphNode("", null, s);
-    let endNode = new GraphNode("", null, e);
+    let startNode = new GraphNode(Algorithms.BFS, null,null, s);
+    let endNode = new GraphNode(Algorithms.BFS, null,null, e);
     let openList = [];
     let closedList = [];
     openList.push(startNode);
@@ -179,7 +179,7 @@ function bfs(s, e) {
                 continue;
             }
 
-            let newNode = new GraphNode("", currentNode, nodePos);
+            let newNode = new GraphNode(Algorithms.BFS, null, currentNode, nodePos);
             neighbors.push(newNode);
         }
 

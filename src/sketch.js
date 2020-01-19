@@ -7,6 +7,7 @@ let visitedDrawingCompleted;
 let lastVisitedNo;
 let cnv;
 let currAlg;
+let currHeuristic;
 
 function setup() {
     cnv = createCanvas(windowWidth, windowHeight - 64);
@@ -16,6 +17,7 @@ function setup() {
     rowCount = parseInt(height / r);
     colCount = parseInt(width / r)+1;
     currAlg = Algorithms["A*"];
+    currHeuristic = Heuristic['manhattan'];
 
     initDOM();
     boardInit();

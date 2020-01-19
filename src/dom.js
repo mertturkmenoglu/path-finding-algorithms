@@ -1,4 +1,5 @@
 let algSelect;
+let hSelect;
 let mazeButton;
 let startButton;
 let helpButton;
@@ -7,6 +8,7 @@ let resetButton;
 
 function initDOM() {
     algSelect = document.getElementById("alg-select");
+    hSelect = document.getElementById('heuristic-select');
 
     mazeButton = document.getElementById("maze-button");
     resetButton = document.getElementById("reset-button");
@@ -18,11 +20,14 @@ function initDOM() {
     resetButton.onclick = reset;
     clearButton.onclick = clearPath;
     startButton.onclick = function () {
-        let sel = algSelect.value;
-        currAlg = Algorithms[sel];
+        let s = algSelect.value;
+        currAlg = Algorithms[s];
+
+        s = hSelect.value;
+        currHeuristic = Heuristic[s];
 
         clearPath();
-        startPathFinding(currAlg);
+        startPathFinding(currAlg, currHeuristic);
     };
 
     helpButton.onclick = giveInfo;

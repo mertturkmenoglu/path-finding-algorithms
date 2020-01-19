@@ -1,6 +1,7 @@
 class GraphNode {
-    constructor(type, parent=null, pos=null) {
-        this.type = type;
+    constructor(algorithm, h, parent=null, pos=null) {
+        this.algorithm = algorithm;
+        this.heuristic = h;
         this.parent = parent;
         this.pos = pos;
         this.f = 0;
@@ -9,14 +10,19 @@ class GraphNode {
     }
 
     calculateH(endNode) {
-        if (this.type === 'dijkstra') {
+        if (this.algorithm !== 'astar') {
             this.h = 0;
             return;
         }
 
-        let a = (this.pos[0] - endNode.pos[0]);
-        let b = (this.pos[1] - endNode.pos[1]);
-        this.h = Math.sqrt(a*a + b*b);
+        let dx = (this.pos[0] - endNode.pos[0]);
+        let dy = (this.pos[1] - endNode.pos[1]);
+
+        if (this.heuristic === Heuristic.Euclidean) {
+            this.h = Math.sqrt(dx*dx + dy*dy);
+        } else {
+            this.h = Math.abs(dx) + Math.abs(dy);
+        }
     }
 
     calculateG(currentNode) {

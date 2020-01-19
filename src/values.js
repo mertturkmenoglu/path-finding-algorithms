@@ -20,8 +20,8 @@ const Cell = Object.freeze({
 });
 
 const Heuristic = Object.freeze({
-    'manhattan': 0,
-    'euclidean': 1
+    'Manhattan': 0,
+    'Euclidean': 1
 });
 
 const NodeType = Object.freeze({
