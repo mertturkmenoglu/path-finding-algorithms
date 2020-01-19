@@ -3,7 +3,7 @@ let gameStatus;
 let maxValue;
 
 function startPathFinding(type) {
-    if (statePoints[0] === 0 || statePoints[1] === 0) {
+    if (pointStates[0] === 0 || pointStates[1] === 0) {
         alert("Please state start and end points");
     } else {
         let points = findPoints();

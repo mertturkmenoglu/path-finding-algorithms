@@ -2,7 +2,7 @@ let board;
 const r = 32;
 let rowCount;
 let colCount;
-let statePoints;
+let pointStates;
 let visitedDrawingCompleted;
 let lastVisitedNo;
 let cnv;
@@ -52,7 +52,7 @@ function boardInit() {
     for (let i = 0; i < rowCount; i++) {
         board[i] = new Array(colCount+1).fill(Cell.empty);
     }
-    statePoints = [0, 0];
+    pointStates = [Cell.empty, Cell.empty];
 }
 
 function init() {
