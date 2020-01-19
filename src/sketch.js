@@ -67,12 +67,7 @@ function init() {
 
 function giveInfo() {
     alert("Left click to add an object, right click to remove an object." +
-        "\nPress 'S' to start path finding." +
-        "\nPress 'R' to reset everything." +
-        "\nPress 'D' to use Dijkstra algorithm." +
-        "\nPress 'B' to use BFS algorithm." +
-        "\nPress 'G' to generate maze." +
-        "\nPress 'C' to clear path.");
+          "When you are ready, press 'Start'.");
 }
 
 function reset() {

@@ -1,28 +1,3 @@
-function keyPressed() {
-    switch (key.toLowerCase()) {
-        case 's':
-            startPathFinding(Algorithms["A*"], currHeuristic);
-            break;
-        case 'd':
-            startPathFinding(Algorithms.Dijkstra, currHeuristic);
-            break;
-        case 'b':
-            startPathFinding(Algorithms.BFS, currHeuristic);
-            break;
-        case 'c':
-            clearPath();
-            break;
-        case 'r':
-            reset();
-            break;
-        case 'g':
-            generateMaze();
-            break;
-        default:
-            break;
-    }
-}
-
 function mousePressed() {
     /**
      * If game stopped, then mouse clicks are invalid.
