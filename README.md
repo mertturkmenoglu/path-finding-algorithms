@@ -6,8 +6,8 @@
 # Table of Contents
 * [Description](#Description)
 * [Prerequisites](#Prerequisites)
-* [Installing the project](#markdown-header-installing-the-project)
-* [Using Path Finding](#markdown-header-using-path-finding)
+* [Installing the project](#installing-the-project)
+* [Using Path Finding](#using-path-finding)
 * [Features](#Features)
 * [Contributing](#Contributing)
 * [Authors](#Authors)
