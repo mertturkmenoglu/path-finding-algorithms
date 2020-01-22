@@ -11,7 +11,11 @@ let currAlg;
 let currHeuristic;
 
 function setup() {
-    cnv = createCanvas(windowWidth, windowHeight - 80);
+    let w = windowWidth;
+    w = w - (w % r);    // Prevent overflow
+    let h = windowHeight - document.getElementById('nav-bar').clientHeight;  // Subtract navigation bar height
+    h = h - (h % r);    // Prevent overflow
+    cnv = createCanvas(w, h);
     cnv.style('display', 'block');
     cnv.parent('container');
     textAlign(CENTER, CENTER);
