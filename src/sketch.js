@@ -5,6 +5,7 @@ let colCount;
 let pointStates;
 let visitedDrawingCompleted;
 let lastVisitedNo;
+let lastPathNo;
 let cnv;
 let currAlg;
 let currHeuristic;
@@ -44,7 +45,9 @@ function draw() {
 
         if (visitedDrawingCompleted) {
             drawPath();
-            noLoop();
+            if (lastPathNo >= path.length) {
+                noLoop();
+            }
         }
     }
 }
@@ -61,6 +64,7 @@ function init() {
     gameStatus = GameStatus.continue;
     visitedDrawingCompleted = false;
     lastVisitedNo = 5;
+    lastPathNo = 0;
     maxValue = rowCount * colCount;
     noStroke();
 }
