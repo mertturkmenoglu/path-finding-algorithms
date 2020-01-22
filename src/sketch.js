@@ -11,8 +11,9 @@ let currAlg;
 let currHeuristic;
 
 function setup() {
-    cnv = createCanvas(windowWidth, windowHeight - 64);
+    cnv = createCanvas(windowWidth, windowHeight - 80);
     cnv.style('display', 'block');
+    cnv.parent('container');
     textAlign(CENTER, CENTER);
 
     rowCount = parseInt(height / r);
