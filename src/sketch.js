@@ -65,11 +65,6 @@ function init() {
     noStroke();
 }
 
-function giveInfo() {
-    alert("Left click to add an object, right click to remove an object." +
-          "When you are ready, press 'Start'.");
-}
-
 function reset() {
     boardInit();
     init();
