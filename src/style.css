@@ -97,3 +97,9 @@
     from {bottom: 30px; opacity: 0.7;}
     to {bottom: 0; opacity: 0;}
 }
+
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
