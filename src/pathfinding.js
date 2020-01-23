@@ -37,6 +37,27 @@ function isValidMove(nodePos) {
     return (isOnBoard(nodePos) && isWalkable(nodePos));
 }
 
+function isValidDiagonal(pos, m) {
+    let y = pos[0];
+    let x = pos[1];
+    let dy = m[0];
+    let dx = m[1];
+
+    if (dx === -1) { // On LHS
+        if (dy === -1) { // TOP LEFT
+            return !(board[y][x-1] === Cell.obstacle && board[y-1][x] === Cell.obstacle);
+        } else { // BOTTOM LEFT
+            return !(board[y][x-1] === Cell.obstacle && board[y+1][x] === Cell.obstacle);
+        }
+    } else { // On RHS
+        if (dy === -1) { // TOP RIGHT
+            return !(board[y-1][x] === Cell.obstacle && board[y][x+1] === Cell.obstacle);
+        } else { // BOTTOM RIGHT
+            return !(board[y+1][x] === Cell.obstacle && board[y][x+1] === Cell.obstacle);
+        }
+    }
+}
+
 function findPoints() {
     let s;
     let e;
@@ -95,12 +116,29 @@ function aStar(s, e, algorithm, h) {
         }
 
         let neighbors = [];
-        let moves = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, 1]];
+        let straight = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+        let diagonal = [[-1, -1], [1, -1], [-1, 1], [1, 1]];
 
-        for (let m of moves) {
+        for (let m of straight) {
             let nodePos = [currentNode.pos[0] + m[0], currentNode.pos[1] + m[1]];
 
             if (!isValidMove(nodePos)) {
+                continue;
+            }
+
+            let newNode = new GraphNode(algorithm, h, currentNode, nodePos);
+            newNode.updateValues(currentNode, endNode);
+            neighbors.push(newNode);
+        }
+
+        for (let m of diagonal) {
+            let nodePos = [currentNode.pos[0] + m[0], currentNode.pos[1] + m[1]];
+
+            if (!isValidMove(nodePos)) {
+                continue;
+            }
+
+            if (!isValidDiagonal(currentNode.pos, m)) {
                 continue;
             }
 
@@ -170,9 +208,10 @@ function bfs(s, e) {
         }
 
         let neighbors = [];
-        let moves = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, 1]];
+        let straight = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+        let diagonal = [[-1, -1], [1, -1], [-1, 1], [1, 1]];
 
-        for (let m of moves) {
+        for (let m of straight) {
             let nodePos = [currentNode.pos[0] + m[0], currentNode.pos[1] + m[1]];
 
             if (!isValidMove(nodePos)) {
@@ -180,6 +219,21 @@ function bfs(s, e) {
             }
 
             let newNode = new GraphNode(Algorithms.BFS, null, currentNode, nodePos);
+            neighbors.push(newNode);
+        }
+
+        for (let m of diagonal) {
+            let nodePos = [currentNode.pos[0] + m[0], currentNode.pos[1] + m[1]];
+
+            if (!isValidMove(nodePos)) {
+                continue;
+            }
+
+            if (!isValidDiagonal(currentNode.pos, m)) {
+                continue;
+            }
+
+            let newNode = new GraphNode(algorithm, h, currentNode, nodePos);
             neighbors.push(newNode);
         }
 
