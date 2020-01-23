@@ -233,7 +233,7 @@ function bfs(s, e) {
                 continue;
             }
 
-            let newNode = new GraphNode(algorithm, h, currentNode, nodePos);
+            let newNode = new GraphNode(Algorithms.BFS, null, currentNode, nodePos);
             neighbors.push(newNode);
         }
 
