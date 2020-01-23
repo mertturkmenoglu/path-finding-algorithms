@@ -13,8 +13,12 @@ let currHeuristic;
 function setup() {
     let w = windowWidth;
     w = w - (w % r);    // Prevent overflow
-    let h = windowHeight - document.getElementById('nav-bar').clientHeight;  // Subtract navigation bar height
+
+    let navBar = document.getElementById('nav-bar');
+    let navBarMarginBottom = parseInt(getComputedStyle(navBar).getPropertyValue('margin-bottom'));
+    let h = windowHeight - navBar.offsetHeight - navBarMarginBottom;  // Subtract navigation bar height
     h = h - (h % r);    // Prevent overflow
+
     cnv = createCanvas(w, h);
     cnv.style('display', 'block');
     cnv.parent('container');

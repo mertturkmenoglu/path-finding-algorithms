@@ -19,14 +19,14 @@ function drawBoard() {
 
             if (v === Cell.start) {
                 fill(188, 16, 222);
-                textSize(24);
+                textSize(r * 0.75);
                 text("S", j*r+(r/2), i*r+(r/2));
             } else if (v === Cell.obstacle) {
                 fill(100);
                 rect(j*r+1, i*r+1, r-2, r-2);
             } else if (v === Cell.end) {
                 fill(222, 16, 50);
-                textSize(24);
+                textSize(r * 0.75);
                 text("E", j*r+(r/2), i*r+(r/2));
             }
         }

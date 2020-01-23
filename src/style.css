@@ -8,9 +8,10 @@
     justify-content: space-between;
     padding-right: 12px;
     padding-left: 12px;
+    margin-bottom: 16px;
     align-items: center;
-    height: 64px;
-    background-color: #294153;
+    height: 48px;
+    background-color: #303030;
 }
 
 .nav-bar-button-item {
@@ -21,7 +22,7 @@
     -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
     cursor: pointer;
-    background-color: #294153;
+    background-color: #303030;
     color: white;
     padding-left: 2px;
     padding-right: 2px;
@@ -29,12 +30,12 @@
 }
 
 .nav-bar-button-item:hover {
-    background-color: #26353F;
-    color: white;
+    background-color: #323232;
+    color: #f5c518;
 }
 
 .nav-bar-select {
-    background-color: #294153;
+    background-color: #303030;
     color: white;
     border: 6px solid transparent;
     font-size: 24px;
@@ -43,7 +44,8 @@
 }
 
 .nav-bar-select:hover {
-    background-color: #26353F;
+    background-color: #323232;
+    color: #f5c518;
 }
 
 .nav-bar.nav-bar-select-item {
