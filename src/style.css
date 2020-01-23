@@ -50,6 +50,10 @@
     font-size: 24px;
 }
 
+.nav-bar-select-group {
+    display: flex;
+}
+
 #snackbar {
     visibility: hidden;
     min-width: 250px;

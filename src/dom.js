@@ -13,6 +13,12 @@ function initDOM() {
     algSelect.onchange = function () {
         snackbarAlert(`${algSelect.value} selected`, 3000);
         currAlg = Algorithms[algSelect.value];
+
+        if (currAlg !== Algorithms["A*"]) {
+            hSelect.style.display = 'none';
+        } else {
+            hSelect.style.display = 'block';
+        }
     };
 
     hSelect.onchange = function () {
