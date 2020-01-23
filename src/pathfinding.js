@@ -344,14 +344,15 @@ function clearPath() {
 
     for (let i = 0; i < rowCount; i++) {
         for (let j = 0; j < colCount; j++) {
-            if (!(i === s[0] && j === s[1])) {
-                if (!(i === e[0] && j === e[1])) {
-                    if (board[i][j] === Cell.path || board[i][j] >= 5) {
-                        board[i][j] = Cell.empty;
-                    }
-                }
+            if (board[i][j] === Cell.path || board[i][j] >= 5) {
+                board[i][j] = Cell.empty;
             }
         }
+    }
+
+    if (s !== undefined && e !== undefined) {
+        board[s[0]][s[1]] = Cell.start;
+        board[e[0]][e[1]] = Cell.end;
     }
 
     init();

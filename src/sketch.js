@@ -55,7 +55,7 @@ function draw() {
 
         if (visitedDrawingCompleted) {
             drawPath();
-            if (lastPathNo >= path.length) {
+            if (path !== null && lastPathNo >= path.length) {
                 noLoop();
             }
         }
