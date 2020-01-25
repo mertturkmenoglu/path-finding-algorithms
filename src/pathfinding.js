@@ -6,19 +6,21 @@ function startPathFinding(algorithm, heuristic) {
     if (pointStates[0] === 0 || pointStates[1] === 0) {
         alert("Please state start and end points");
     } else {
-        let points = findTerminalNodes();
-        if (algorithm === Algorithms["A*"])
-            path = aStar(points[0], points[1], algorithm, heuristic);
-        else if (algorithm === 'dijkstra')
-            path = dijkstra(points[0], points[1]);
-        else if (algorithm === 'bfs')
-            path = bfs(points[0], points[1]);
+        let [startNode, endNode] = findTerminalNodes();
 
-        if (path === null) {
-            gameStatus = -1;
-        } else {
-            gameStatus = 1;
+        switch (algorithm) {
+            case Algorithms['A*']:
+                path = aStar(startNode, endNode, algorithm, heuristic);
+                break;
+            case Algorithms['Dijkstra']:
+                path = dijkstra(startNode, endNode);
+                break;
+            case Algorithms['BFS']:
+                path = bfs(startNode, endNode);
+                break;
         }
+
+        gameStatus = (path === null) ? -1 : 1;
     }
 }
 
