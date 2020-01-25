@@ -42,7 +42,7 @@ function draw() {
 
     if (gameStatus !== GameStatus.continue) {
         clear();
-        let p = findPoints();
+        let p = findTerminalNodes();
         let s = p[0];
         let e = p[1];
 

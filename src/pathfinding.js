@@ -6,7 +6,7 @@ function startPathFinding(algorithm, heuristic) {
     if (pointStates[0] === 0 || pointStates[1] === 0) {
         alert("Please state start and end points");
     } else {
-        let points = findPoints();
+        let points = findTerminalNodes();
         if (algorithm === Algorithms["A*"])
             path = aStar(points[0], points[1], algorithm, heuristic);
         else if (algorithm === 'dijkstra')
@@ -58,21 +58,31 @@ function isValidDiagonal(pos, m) {
     }
 }
 
-function findPoints() {
+function findTerminalNodes() {
     let s;
     let e;
+    let totalPointCount = 0;
+    let i = 0;
+    let j = 0;
 
-    for (let i = 0; i < rowCount; i++) {
-        for (let j = 0; j < colCount; j++) {
+    while ( i < rowCount && totalPointCount < 2 ) {
+        j = 0;
+        while ( j < colCount && totalPointCount < 2 ) {
             if (board[i][j] === Cell.start) {
                 s = [i, j];
+                totalPointCount++;
             } else if (board[i][j] === Cell.end) {
                 e = [i, j];
+                totalPointCount++;
             }
+
+            j++;
         }
+
+        i++;
     }
 
-    return [s, e];
+    return [s, e]
 }
 
 function aStar(s, e, algorithm, h) {
@@ -338,7 +348,7 @@ function dfs() {
 }
 
 function clearPath() {
-    let points = findPoints();
+    let points = findTerminalNodes();
     let s = points[0];
     let e = points[1];
 
