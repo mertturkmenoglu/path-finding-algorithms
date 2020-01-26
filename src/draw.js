@@ -1,62 +1,65 @@
 function drawGrid() {
-    stroke(0);
-    strokeWeight(1.5);
+    stroke(COLOR_BLACK);
+    strokeWeight(gridLineStrokeWeight);
+
     for (let i = 0; i <= rowCount; i++) {
         line(0, r * i, width, r * i);
     }
 
     for (let i = 0; i <= colCount; i++) {
-        line(r * i, 0, r*i, height);
+        line(r * i, 0, r * i, height);
     }
+
     noStroke();
 }
 
 function drawBoard() {
     noStroke();
+
     for (let i = 0; i < rowCount; i++) {
         for (let j = 0; j < colCount; j++) {
             let v = board[i][j];
 
             if (v === Cell.start) {
-                fill(188, 16, 222);
-                textSize(r * 0.75);
-                text("S", j*r+(r/2), i*r+(r/2));
+                fill(startCellColor.r, startCellColor.g, startCellColor.b);
+                textSize(gridTextSize);
+                text("S", j * r + (r / 2), i * r + (r / 2));
             } else if (v === Cell.obstacle) {
-                fill(100);
-                rect(j*r+1, i*r+1, r-2, r-2);
+                fill(obstacleCellColor.value);
+                rect(j * r + 1, i * r + 1, r - 2, r - 2);
             } else if (v === Cell.end) {
-                fill(222, 16, 50);
-                textSize(r * 0.75);
-                text("E", j*r+(r/2), i*r+(r/2));
+                fill(endCellColor.r, endCellColor.g, endCellColor.b);
+                textSize(gridTextSize);
+                text("E", j * r + (r / 2), i * r + (r / 2));
             }
         }
     }
 }
 
 function drawVisited(path, maxValue, lastVisitedIndex) {
-    for (let i = 0 ; i < lastVisitedIndex && i < path.visited.length; i++) {
+    for (let i = 0; i < lastVisitedIndex && i < path.visited.length; i++) {
         let cell = path.visited[i];
         let c = map(cell.number, maxValue, 5, 255, 100);
-        fill(30, c, c);
+        fill(pathCellColor.r, c, c);
         rect(cell.x * r + 1, cell.y * r + 1, r - 2, r - 2);
     }
 }
 
 function drawPath(path, lastPathIndex) {
-    stroke(228, 186, 34);
-    strokeWeight(Math.sqrt(r));
+    stroke(pathLineColor.r, pathLineColor.g, pathLineColor.b);
+    strokeWeight(pathLineRadius);
 
     let p = path.path;
     if (p === null) {
         return;
     }
 
-    for (let i = 0; i < p.length-1 && i <= lastPathIndex; i++) {
-        let currx = p[i].x * r + (r / 2);
-        let curry = p[i].y * r + (r / 2);
-        let nextx = p[i + 1].x * r + (r / 2);
-        let nexty = p[i + 1].y * r + (r / 2);
-        line(currx, curry, nextx, nexty);
+    for (let i = 0; i < p.length - 1 && i <= lastPathIndex; i++) {
+        let currX = p[i].x * r + (r / 2);
+        let currY = p[i].y * r + (r / 2);
+        let nextX = p[i + 1].x * r + (r / 2);
+        let nextY = p[i + 1].y * r + (r / 2);
+        line(currX, currY, nextX, nextY);
     }
 
     noStroke();

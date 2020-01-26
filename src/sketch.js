@@ -1,5 +1,4 @@
 let board;
-const r = 32;
 let rowCount;
 let colCount;
 let pointStates;
@@ -50,7 +49,7 @@ function draw() {
         drawGrid();
         drawBoard();
         drawVisited(path, maxValue, lastVisitedNo);
-        lastVisitedNo += 3;
+        lastVisitedNo += drawSpeed;
 
         visitedDrawingCompleted = lastVisitedNo >= maxValue;
 
@@ -60,7 +59,7 @@ function draw() {
             }
 
             drawPath(path, lastPathNo);
-            lastPathNo++;
+            lastPathNo += drawSpeed;
         }
     }
 }

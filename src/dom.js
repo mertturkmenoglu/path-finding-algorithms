@@ -11,7 +11,7 @@ function initDOM() {
     hSelect = document.getElementById('heuristic-select');
 
     algSelect.onchange = function () {
-        snackbarAlert(`${algSelect.value} selected`, 3000);
+        snackbarAlert(`${algSelect.value} selected`, snackbarTimeoutShort);
         currAlg = Algorithms[algSelect.value];
 
         if (currAlg !== Algorithms["A*"]) {
@@ -22,7 +22,7 @@ function initDOM() {
     };
 
     hSelect.onchange = function () {
-        snackbarAlert(`${hSelect.value} selected`, 3000);
+        snackbarAlert(`${hSelect.value} selected`, snackbarTimeoutShort);
         currHeuristic = Heuristic[hSelect.value];
     };
 
@@ -33,16 +33,16 @@ function initDOM() {
     helpButton  = document.getElementById("help-button");
 
     mazeButton.onclick = function () {
-        snackbarAlert('Maze generated', 3000);
+        snackbarAlert('Maze generated', snackbarTimeoutShort);
         generateMaze();
     };
 
     resetButton.onclick = function () {
-        snackbarAlert('Everything removed', 3000);
+        snackbarAlert('Everything removed', snackbarTimeoutShort);
         reset();
     };
     clearButton.onclick = function () {
-        snackbarAlert('Clear path finding', 3000);
+        snackbarAlert('Clear path finding', snackbarTimeoutShort);
         clearPath();
     };
 
@@ -52,9 +52,7 @@ function initDOM() {
     };
 
     helpButton.onclick = function () {
-        let msg = "Left click to add an object, right click to remove an object." +
-            "When you are ready, press 'Start'.";
-        snackbarAlert(msg, 5000);
+        snackbarAlert(helpButtonText, snackbarTimeoutLong);
     };
 
     document.addEventListener('contextmenu', e => e.preventDefault());
@@ -62,8 +60,10 @@ function initDOM() {
 
 function snackbarAlert(msg, time) {
     let snackbar = document.getElementById('snackbar');
+
     snackbar.className = 'show';
     snackbar.innerText = msg;
+
     setTimeout( () => {
         snackbar.className = snackbar.className.replace('show', '');
     }, time);
