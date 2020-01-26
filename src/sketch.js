@@ -42,12 +42,10 @@ function draw() {
 
     if (gameStatus !== GameStatus.continue) {
         clear();
-        let p = findTerminalNodes();
-        let s = p[0];
-        let e = p[1];
+        let [s, e] = findTerminalNodes();
 
-        board[s[0]][s[1]] = Cell.start;
-        board[e[0]][e[1]] = Cell.end;
+        board[s.y][s.x] = Cell.start;
+        board[e.y][e.x] = Cell.end;
 
         drawGrid();
         drawBoard();
@@ -57,7 +55,7 @@ function draw() {
         visitedDrawingCompleted = lastVisitedNo >= maxValue;
 
         if (visitedDrawingCompleted) {
-            if (path !== null && lastPathNo >= path.length) {
+            if (path.path !== null && lastPathNo >= path.path.length) {
                 noLoop();
             }
 

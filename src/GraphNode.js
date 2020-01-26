@@ -1,9 +1,9 @@
 class GraphNode {
-    constructor(algorithm, h, parent=null, pos=null) {
+    constructor(algorithm, h, parent=null, position=null) {
         this.algorithm = algorithm;
         this.heuristic = h;
         this.parent = parent;
-        this.pos = pos;
+        this.position = position;
         this.f = 0;
         this.g = 0;
         this.h = 0;
@@ -15,8 +15,8 @@ class GraphNode {
             return;
         }
 
-        let dx = (this.pos[0] - endNode.pos[0]);
-        let dy = (this.pos[1] - endNode.pos[1]);
+        let dx = (this.position.x - endNode.position.x);
+        let dy = (this.position.y - endNode.position.y);
 
         if (this.heuristic === Heuristic.Euclidean) {
             this.h = Math.sqrt(dx*dx + dy*dy);
@@ -26,7 +26,7 @@ class GraphNode {
     }
 
     calculateG(currentNode) {
-        if ( this.pos[0] - currentNode.pos[0] === 0 || this.pos[1] - currentNode.pos[1] === 0 ) {
+        if ( this.position.x - currentNode.position.x === 0 || this.position.y - currentNode.position.y === 0 ) {
             this.g = currentNode.g + 1;
         } else {
             this.g = currentNode.g + Math.SQRT2
@@ -44,6 +44,6 @@ class GraphNode {
     }
 
     isEqual(other) {
-        return ((this.pos[0] === other.pos[0]) && (this.pos[1] === other.pos[1]));
+        return ((this.position.x === other.position.x) && (this.position.y === other.position.y));
     }
 }

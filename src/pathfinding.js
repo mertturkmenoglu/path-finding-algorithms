@@ -20,31 +20,31 @@ function startPathFinding(algorithm, heuristic) {
                 break;
         }
 
-        gameStatus = (path === null) ? -1 : 1;
-        maxValue = (path === null) ? rowCount * colCount : path.totalVisitedNumber;
+        gameStatus = (path.path === null) ? -1 : 1;
+        maxValue = (path.path === null) ? rowCount * colCount : path.totalVisitedNumber;
     }
 }
 
-function isOnBoard(nodePos) {
-    return !(nodePos[0] > (rowCount - 1) ||
-        nodePos[0] < 0 ||
-        nodePos[1] > (colCount  - 1) ||
-        nodePos[1] < 0);
+function isOnBoard(nodePosition) {
+    return !(nodePosition.y > (rowCount - 1) ||
+        nodePosition.y < 0 ||
+        nodePosition.x > (colCount  - 1) ||
+        nodePosition.x < 0);
 }
 
-function isWalkable(nodePos) {
-    return board[nodePos[0]][nodePos[1]] !== Cell.obstacle;
+function isWalkable(nodePosition) {
+    return board[nodePosition.y][nodePosition.x] !== Cell.obstacle;
 }
 
-function isValidMove(nodePos) {
-    return (isOnBoard(nodePos) && isWalkable(nodePos));
+function isValidMove(nodePosition) {
+    return (isOnBoard(nodePosition) && isWalkable(nodePosition));
 }
 
-function isValidDiagonal(pos, m) {
-    let y = pos[0];
-    let x = pos[1];
-    let dy = m[0];
-    let dx = m[1];
+function isValidDiagonal(position, move) {
+    let y = position.y;
+    let x = position.x;
+    let dy = move[1];
+    let dx = move[0];
 
     if (dx === -1) { // On LHS
         if (dy === -1) { // TOP LEFT
@@ -72,10 +72,10 @@ function findTerminalNodes() {
         j = 0;
         while ( j < colCount && totalPointCount < 2 ) {
             if (board[i][j] === Cell.start) {
-                s = [i, j];
+                s = { x: j, y: i };
                 totalPointCount++;
             } else if (board[i][j] === Cell.end) {
-                e = [i, j];
+                e = { x: j, y: i };
                 totalPointCount++;
             }
 
@@ -126,7 +126,7 @@ function aStar(start, end, algorithm, heuristic) {
             let tmp = currentNode;
 
             while (tmp != null) {
-                path.push(tmp.pos);
+                path.push(tmp.position);
                 tmp = tmp.parent;
             }
 
@@ -144,7 +144,10 @@ function aStar(start, end, algorithm, heuristic) {
         // Check every straight move. If it is a valid move, then create a node
         // and add the node to valid neighbors list.
         for (let move of straightMoves) {
-            let newNodePosition = [currentNode.pos[0] + move[0], currentNode.pos[1] + move[1]];
+            let newNodePosition = {
+                x: currentNode.position.x + move[0],
+                y: currentNode.position.y + move[1]
+            };
 
             if (!isValidMove(newNodePosition)) {
                 continue;
@@ -160,10 +163,13 @@ function aStar(start, end, algorithm, heuristic) {
         // Note: If diagonal allowed / not allowed option will be added to program,
         // this loop must be inside of a if block.
         for (let move of diagonalMoves) {
-            let newNodePosition = [currentNode.pos[0] + move[0], currentNode.pos[1] + move[1]];
+            let newNodePosition = {
+                x: currentNode.position.x + move[0],
+                y: currentNode.position.y + move[1]
+            };
 
             // First check borders, then check straight neighbors
-            if (!isValidMove(newNodePosition) || !isValidDiagonal(currentNode.pos, move)) {
+            if (!isValidMove(newNodePosition) || !isValidDiagonal(currentNode.position, move)) {
                 continue;
             }
 
@@ -174,12 +180,12 @@ function aStar(start, end, algorithm, heuristic) {
 
         for (let neighbor of validNeighbors) {
             if (!neighbor.isEqual(startNode) && !neighbor.isEqual(endNode)) {
-                let x = neighbor.pos[1];
-                let y = neighbor.pos[0];
+                let x = neighbor.position.x;
+                let y = neighbor.position.y;
                 if (board[y][x] === Cell.empty && !visitedCells.some(e => e.x === x && e.y === y)) {
                     visitedCells.push({
-                        x: neighbor.pos[1],
-                        y: neighbor.pos[0],
+                        x: neighbor.position.x,
+                        y: neighbor.position.y,
                         number: visitedNo
                     });
                     visitedNo++;
@@ -208,7 +214,11 @@ function aStar(start, end, algorithm, heuristic) {
     }
 
     // No path found
-    return null;
+    return {
+        path: null,
+        visited: visitedCells,
+        totalVisitedNumber: visitedNo
+    };
 }
 
 function dijkstra(start, end) {
@@ -238,7 +248,7 @@ function bfs(start, end) {
             let tmp = currentNode;
 
             while (tmp != null) {
-                path.push(tmp.pos);
+                path.push(tmp.position);
                 tmp = tmp.parent;
             }
 
@@ -256,7 +266,10 @@ function bfs(start, end) {
         // Check every straight move. If it is a valid move, then create a node
         // and add the node to valid neighbors list.
         for (let move of straightMoves) {
-            let newNodePosition = [currentNode.pos[0] + move[0], currentNode.pos[1] + move[1]];
+            let newNodePosition = {
+                x: currentNode.position.x + move[0],
+                y: currentNode.position.y + move[1]
+            };
 
             if (!isValidMove(newNodePosition)) {
                 continue;
@@ -271,10 +284,13 @@ function bfs(start, end) {
         // Note: If diagonal allowed / not allowed option will be added to program,
         // this loop must be inside of a if block.
         for (let move of diagonalMoves) {
-            let newNodePosition = [currentNode.pos[0] + move[0], currentNode.pos[1] + move[1]];
+            let newNodePosition = {
+                x: currentNode.position.x + move[0],
+                y: currentNode.position.y + move[1]
+            };
 
             // First check borders, then check straight neighbors
-            if (!isValidMove(newNodePosition) || !isValidDiagonal(currentNode.pos, move)) {
+            if (!isValidMove(newNodePosition) || !isValidDiagonal(currentNode.position, move)) {
                 continue;
             }
 
@@ -284,12 +300,12 @@ function bfs(start, end) {
 
         for (let neighbor of validNeighbors) {
             if (!neighbor.isEqual(startNode) && !neighbor.isEqual(endNode)) {
-                let x = neighbor.pos[1];
-                let y = neighbor.pos[0];
+                let x = neighbor.position.x;
+                let y = neighbor.position.y;
                 if (board[y][x] === Cell.empty && !visitedCells.some(e => e.x === x && e.y === y)) {
                     visitedCells.push({
-                        x: neighbor.pos[1],
-                        y: neighbor.pos[0],
+                        x: neighbor.position.x,
+                        y: neighbor.position.y,
                         number: visitedNo
                     });
                     visitedNo++;
@@ -307,7 +323,11 @@ function bfs(start, end) {
     }
 
     // No path
-    return null;
+    return {
+        path: null,
+        visited: visitedCells,
+        totalVisitedNumber: visitedNo
+    };
 }
 
 function generateMaze() {
@@ -338,7 +358,7 @@ function dfs() {
     board[sy][sx] = Cell.visited;
 
     let stack = [];
-    stack.push([sy, sx]);
+    stack.push( { x: sx, y: sy } );
 
     while (stack.length > 0) {
         let current = stack.pop();
@@ -347,9 +367,12 @@ function dfs() {
         let straightMoves = [[0, -2], [0, 2], [-2, 0], [2, 0]];
 
         for (let move of straightMoves) {
-            let newNodePosition = [current[0] + move[0], current[1] + move[1]];
+            let newNodePosition = {
+                x: current.x + move[0],
+                y: current.y + move[1]
+            };
 
-            if (!isOnBoard(newNodePosition) || board[newNodePosition[0]][newNodePosition[1]] === Cell.visited) {
+            if (!isOnBoard(newNodePosition) || board[newNodePosition.y][newNodePosition.x] === Cell.visited) {
                 continue;
             }
 
@@ -362,21 +385,21 @@ function dfs() {
             stack.push(current);
             let randNeighbor = random(validNeighbors);
 
-            if (randNeighbor[0] === current[0]) { // Same row
-                if (randNeighbor[1] > current[1]) {
-                    board[current[0]][current[1] + 1] = Cell.empty;
+            if (randNeighbor.y === current.y) { // Same row
+                if (randNeighbor.x > current.x) {
+                    board[current.y][current.x + 1] = Cell.empty;
                 } else {
-                    board[current[0]][current[1] - 1] = Cell.empty;
+                    board[current.y][current.x - 1] = Cell.empty;
                 }
             } else { // Same column
-                if (randNeighbor[0] > current[0]) {
-                    board[current[0] + 1][current[1]] = Cell.empty;
+                if (randNeighbor.y > current.y) {
+                    board[current.y + 1][current.x] = Cell.empty;
                 } else {
-                    board[current[0] - 1][current[1]] = Cell.empty;
+                    board[current.y - 1][current.x] = Cell.empty;
                 }
             }
 
-            board[randNeighbor[0]][randNeighbor[1]] = Cell.visited;
+            board[randNeighbor.y][randNeighbor.x] = Cell.visited;
             stack.push(randNeighbor);
         }
     }
@@ -392,9 +415,7 @@ function dfs() {
 }
 
 function clearPath() {
-    let points = findTerminalNodes();
-    let s = points[0];
-    let e = points[1];
+    let [s, e] = findTerminalNodes();
 
     for (let i = 0; i < rowCount; i++) {
         for (let j = 0; j < colCount; j++) {
@@ -405,8 +426,8 @@ function clearPath() {
     }
 
     if (s !== undefined && e !== undefined) {
-        board[s[0]][s[1]] = Cell.start;
-        board[e[0]][e[1]] = Cell.end;
+        board[s.y][s.x] = Cell.start;
+        board[e.y][e.x] = Cell.end;
     }
 
     init();

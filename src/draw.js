@@ -47,12 +47,15 @@ function drawPath(path, lastPathIndex) {
     strokeWeight(Math.sqrt(r));
 
     let p = path.path;
+    if (p === null) {
+        return;
+    }
 
     for (let i = 0; i < p.length-1 && i <= lastPathIndex; i++) {
-        let currx = p[i][1] * r + (r / 2);
-        let curry = p[i][0] * r + (r / 2);
-        let nextx = p[i + 1][1] * r + (r / 2);
-        let nexty = p[i + 1][0] * r + (r / 2);
+        let currx = p[i].x * r + (r / 2);
+        let curry = p[i].y * r + (r / 2);
+        let nextx = p[i + 1].x * r + (r / 2);
+        let nexty = p[i + 1].y * r + (r / 2);
         line(currx, curry, nextx, nexty);
     }
 
