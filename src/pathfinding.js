@@ -331,7 +331,7 @@ function dfs() {
         }
     }
 
-    // Choose point
+    // Choose start point
     let sy = 1;
     let sx = 1;
 
@@ -341,36 +341,38 @@ function dfs() {
     stack.push([sy, sx]);
 
     while (stack.length > 0) {
-        let e = stack.pop();
+        let current = stack.pop();
 
-        let neighbors = [];
-        let moves = [[0, -2], [0, 2], [-2, 0], [2, 0]];
+        let validNeighbors = [];
+        let straightMoves = [[0, -2], [0, 2], [-2, 0], [2, 0]];
 
-        for (let m of moves) {
-            let nodePos = [e[0] + m[0], e[1] + m[1]];
+        for (let move of straightMoves) {
+            let newNodePosition = [current[0] + move[0], current[1] + move[1]];
 
-            if (!isOnBoard(nodePos) || board[nodePos[0]][nodePos[1]] === Cell.visited) {
+            if (!isOnBoard(newNodePosition) || board[newNodePosition[0]][newNodePosition[1]] === Cell.visited) {
                 continue;
             }
 
-            neighbors.push(nodePos);
+            validNeighbors.push(newNodePosition);
         }
 
-        if (neighbors.length > 0) {
-            stack.push(e);
-            let randNeighbor = random(neighbors);
+        // If we have available neighbor(s), we choose a random neighbor
+        // and remove the wall(obstacle cell) between these two cell.
+        if (validNeighbors.length > 0) {
+            stack.push(current);
+            let randNeighbor = random(validNeighbors);
 
-            if (randNeighbor[0] === e[0]) { // Same row
-                if (randNeighbor[1] > e[1]) {
-                    board[e[0]][e[1] + 1] = Cell.empty;
+            if (randNeighbor[0] === current[0]) { // Same row
+                if (randNeighbor[1] > current[1]) {
+                    board[current[0]][current[1] + 1] = Cell.empty;
                 } else {
-                    board[e[0]][e[1] - 1] = Cell.empty;
+                    board[current[0]][current[1] - 1] = Cell.empty;
                 }
             } else { // Same column
-                if (randNeighbor[0] > e[0]) {
-                    board[e[0] + 1][e[1]] = Cell.empty;
+                if (randNeighbor[0] > current[0]) {
+                    board[current[0] + 1][current[1]] = Cell.empty;
                 } else {
-                    board[e[0] - 1][e[1]] = Cell.empty;
+                    board[current[0] - 1][current[1]] = Cell.empty;
                 }
             }
 
@@ -379,6 +381,7 @@ function dfs() {
         }
     }
 
+    // Cells were marked as visited. Mark them as empty again.
     for (let i = 0; i < rowCount; i++) {
         for (let j = 0; j < colCount; j++) {
             if (board[i][j] === -1) {
