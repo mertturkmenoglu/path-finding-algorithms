@@ -21,6 +21,7 @@ function startPathFinding(algorithm, heuristic) {
         }
 
         gameStatus = (path === null) ? -1 : 1;
+        maxValue = (path === null) ? rowCount * colCount : path.totalVisitedNumber;
     }
 }
 
@@ -87,19 +88,23 @@ function findTerminalNodes() {
     return [s, e]
 }
 
-function aStar(s, e, algorithm, h) {
-    let startNode = new GraphNode(algorithm, h, null, s);
-    let endNode = new GraphNode(algorithm, h, null, e);
-    let openList = [];
-    let closedList = [];
-    let visitedNo = 5;
+function aStar(start, end, algorithm, heuristic) {
+    let startNode = new GraphNode(algorithm, heuristic, null, start);
+    let endNode = new GraphNode(algorithm, heuristic, null, end);
 
-    openList.push(startNode);
+    let visitedNo = 5;
     let loopCount = 0;
     const maxLoopCount = Math.pow(rowCount / 2 , 10);
 
+    let openList = [];
+    let closedList = [];
+    let visitedCells = [];
+    openList.push(startNode);
+
     while (openList.length > 0 && loopCount < maxLoopCount) {
         loopCount++;
+
+        // Find minimum cost node
         let currentNode = openList[0];
         let currentIndex = 0;
 
@@ -110,164 +115,198 @@ function aStar(s, e, algorithm, h) {
             }
         }
 
+        // Remove it from open list and add it to closed list
         openList.splice(currentIndex, 1);
         closedList.push(currentNode);
 
-        // Find a path
+        // If current node and end node is equal, then there is a path
+        // Backtrace the path and return a position array
         if (currentNode.isEqual(endNode)) {
             let path = [];
-            let curr = currentNode;
+            let tmp = currentNode;
 
-            while (curr != null) {
-                path.push(curr.pos);
-                curr = curr.parent;
+            while (tmp != null) {
+                path.push(tmp.pos);
+                tmp = tmp.parent;
             }
 
-            maxValue = visitedNo;
-            return path.reverse();
+            return {
+                path: path.reverse(),
+                visited: visitedCells,
+                totalVisitedNumber: visitedNo
+            };
         }
 
-        let neighbors = [];
-        let straight = [[0, -1], [0, 1], [-1, 0], [1, 0]];
-        let diagonal = [[-1, -1], [1, -1], [-1, 1], [1, 1]];
+        let validNeighbors = [];
+        let straightMoves = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+        let diagonalMoves = [[-1, -1], [1, -1], [-1, 1], [1, 1]];
 
-        for (let m of straight) {
-            let nodePos = [currentNode.pos[0] + m[0], currentNode.pos[1] + m[1]];
+        // Check every straight move. If it is a valid move, then create a node
+        // and add the node to valid neighbors list.
+        for (let move of straightMoves) {
+            let newNodePosition = [currentNode.pos[0] + move[0], currentNode.pos[1] + move[1]];
 
-            if (!isValidMove(nodePos)) {
+            if (!isValidMove(newNodePosition)) {
                 continue;
             }
 
-            let newNode = new GraphNode(algorithm, h, currentNode, nodePos);
+            let newNode = new GraphNode(algorithm, heuristic, currentNode, newNodePosition);
             newNode.updateValues(currentNode, endNode);
-            neighbors.push(newNode);
+            validNeighbors.push(newNode);
         }
 
-        for (let m of diagonal) {
-            let nodePos = [currentNode.pos[0] + m[0], currentNode.pos[1] + m[1]];
+        // Check every diagonal move. If it is a valid move, then create a node
+        // and add the node to valid neighbors list.
+        // Note: If diagonal allowed / not allowed option will be added to program,
+        // this loop must be inside of a if block.
+        for (let move of diagonalMoves) {
+            let newNodePosition = [currentNode.pos[0] + move[0], currentNode.pos[1] + move[1]];
 
-            if (!isValidMove(nodePos)) {
+            // First check borders, then check straight neighbors
+            if (!isValidMove(newNodePosition) || !isValidDiagonal(currentNode.pos, move)) {
                 continue;
             }
 
-            if (!isValidDiagonal(currentNode.pos, m)) {
-                continue;
-            }
-
-            let newNode = new GraphNode(algorithm, h, currentNode, nodePos);
+            let newNode = new GraphNode(algorithm, heuristic, currentNode, newNodePosition);
             newNode.updateValues(currentNode, endNode);
-            neighbors.push(newNode);
+            validNeighbors.push(newNode);
         }
 
-        for (let n of neighbors) {
-            if (!n.isEqual(startNode) && !n.isEqual(endNode)) {
-                let cp = n.pos;
-                if (board[cp[0]][cp[1]] === Cell.empty) {
-                    board[cp[0]][cp[1]] = visitedNo;
+        for (let neighbor of validNeighbors) {
+            if (!neighbor.isEqual(startNode) && !neighbor.isEqual(endNode)) {
+                let x = neighbor.pos[1];
+                let y = neighbor.pos[0];
+                if (board[y][x] === Cell.empty && !visitedCells.some(e => e.x === x && e.y === y)) {
+                    visitedCells.push({
+                        x: neighbor.pos[1],
+                        y: neighbor.pos[0],
+                        number: visitedNo
+                    });
                     visitedNo++;
                 }
             }
 
-            if (closedList.some(e => e.isEqual(n))) {
+            // If it is already visited, continue
+            if (closedList.some(e => e.isEqual(neighbor))) {
                 continue;
             }
 
-            let isInOpenList = openList.some(e => e.isEqual(n));
+            let isInOpenList = openList.some(e => e.isEqual(neighbor));
 
+            // If it is not in the open list, add it
+            // If it is in the open list, then update the cost and path
             if (!isInOpenList) {
-                openList.push(n)
+                openList.push(neighbor)
             } else {
-                let index = openList.findIndex(e => e.isEqual(n));
+                let index = openList.findIndex(e => e.isEqual(neighbor));
 
-                if (openList[index].f > n.f) {
-                    openList[index] = n;
+                if (openList[index].f > neighbor.f) {
+                    openList[index] = neighbor;
                 }
             }
         }
     }
 
+    // No path found
     return null;
 }
 
-function dijkstra(s, e) {
-    return aStar(s, e, "dijkstra");
+function dijkstra(start, end) {
+    return aStar(start, end, Algorithms.Dijkstra, null);
 }
 
-function bfs(s, e) {
-    let startNode = new GraphNode(Algorithms.BFS, null,null, s);
-    let endNode = new GraphNode(Algorithms.BFS, null,null, e);
-    let openList = [];
-    let closedList = [];
-    openList.push(startNode);
+function bfs(start, end) {
+    let startNode = new GraphNode(Algorithms.BFS, null,null, start);
+    let endNode = new GraphNode(Algorithms.BFS, null,null, end);
+
     let visitedNo = 5;
 
+    let openList = [];
+    let closedList = [];
+    let visitedCells = [];
+    openList.push(startNode);
+
     while (openList.length > 0) {
+        // Take the first item from the open list and add it to the closed list
         let currentNode = openList.shift();
         closedList.push(currentNode);
 
-        // Find a path
+        // If current node and end node is equal, then there is a path
+        // Backtrace the path and return a position array
         if (currentNode.isEqual(endNode)) {
             let path = [];
-            let curr = currentNode;
+            let tmp = currentNode;
 
-            while (curr != null) {
-                path.push(curr.pos);
-                curr = curr.parent;
+            while (tmp != null) {
+                path.push(tmp.pos);
+                tmp = tmp.parent;
             }
 
-            maxValue = visitedNo;
-            return path.reverse();
+            return {
+                path: path.reverse(),
+                visited: visitedCells,
+                totalVisitedNumber: visitedNo
+            };
         }
 
-        let neighbors = [];
-        let straight = [[0, -1], [0, 1], [-1, 0], [1, 0]];
-        let diagonal = [[-1, -1], [1, -1], [-1, 1], [1, 1]];
+        let validNeighbors = [];
+        let straightMoves = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+        let diagonalMoves = [[-1, -1], [1, -1], [-1, 1], [1, 1]];
 
-        for (let m of straight) {
-            let nodePos = [currentNode.pos[0] + m[0], currentNode.pos[1] + m[1]];
+        // Check every straight move. If it is a valid move, then create a node
+        // and add the node to valid neighbors list.
+        for (let move of straightMoves) {
+            let newNodePosition = [currentNode.pos[0] + move[0], currentNode.pos[1] + move[1]];
 
-            if (!isValidMove(nodePos)) {
+            if (!isValidMove(newNodePosition)) {
                 continue;
             }
 
-            let newNode = new GraphNode(Algorithms.BFS, null, currentNode, nodePos);
-            neighbors.push(newNode);
+            let newNode = new GraphNode(Algorithms.BFS, null, currentNode, newNodePosition);
+            validNeighbors.push(newNode);
         }
 
-        for (let m of diagonal) {
-            let nodePos = [currentNode.pos[0] + m[0], currentNode.pos[1] + m[1]];
+        // Check every diagonal move. If it is a valid move, then create a node
+        // and add the node to valid neighbors list.
+        // Note: If diagonal allowed / not allowed option will be added to program,
+        // this loop must be inside of a if block.
+        for (let move of diagonalMoves) {
+            let newNodePosition = [currentNode.pos[0] + move[0], currentNode.pos[1] + move[1]];
 
-            if (!isValidMove(nodePos)) {
+            // First check borders, then check straight neighbors
+            if (!isValidMove(newNodePosition) || !isValidDiagonal(currentNode.pos, move)) {
                 continue;
             }
 
-            if (!isValidDiagonal(currentNode.pos, m)) {
-                continue;
-            }
-
-            let newNode = new GraphNode(Algorithms.BFS, null, currentNode, nodePos);
-            neighbors.push(newNode);
+            let newNode = new GraphNode(Algorithms.BFS, null, currentNode, newNodePosition);
+            validNeighbors.push(newNode);
         }
 
-        for (let n of neighbors) {
-            if (!n.isEqual(startNode) && !n.isEqual(endNode)) {
-                let cp = n.pos;
-                if (board[cp[0]][cp[1]] === Cell.empty) {
-                    board[cp[0]][cp[1]] = visitedNo;
+        for (let neighbor of validNeighbors) {
+            if (!neighbor.isEqual(startNode) && !neighbor.isEqual(endNode)) {
+                let x = neighbor.pos[1];
+                let y = neighbor.pos[0];
+                if (board[y][x] === Cell.empty && !visitedCells.some(e => e.x === x && e.y === y)) {
+                    visitedCells.push({
+                        x: neighbor.pos[1],
+                        y: neighbor.pos[0],
+                        number: visitedNo
+                    });
                     visitedNo++;
                 }
             }
 
-
-            if (closedList.some(e => e.isEqual(n)) || openList.some(e => e.isEqual(n))) {
+            // If it is already in closed list or open list, continue
+            if (closedList.some(e => e.isEqual(neighbor)) || openList.some(e => e.isEqual(neighbor))) {
                 continue;
             }
 
-            n.parent = currentNode;
-            openList.push(n);
+            neighbor.parent = currentNode;
+            openList.push(neighbor);
         }
     }
 
+    // No path
     return null;
 }
 

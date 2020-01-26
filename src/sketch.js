@@ -51,13 +51,18 @@ function draw() {
 
         drawGrid();
         drawBoard();
-        visitedDrawingCompleted = drawVisited();
+        drawVisited(path, maxValue, lastVisitedNo);
+        lastVisitedNo += 3;
+
+        visitedDrawingCompleted = lastVisitedNo >= maxValue;
 
         if (visitedDrawingCompleted) {
-            drawPath();
             if (path !== null && lastPathNo >= path.length) {
                 noLoop();
             }
+
+            drawPath(path, lastPathNo);
+            lastPathNo++;
         }
     }
 }

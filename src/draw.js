@@ -33,44 +33,28 @@ function drawBoard() {
     }
 }
 
-function drawVisited() {
-    for (let i = 0; i < rowCount; i++) {
-        for (let j = 0; j < colCount; j++) {
-            let value = board[i][j];
-            if (value < 5) {
-                continue;
-            }
-
-            if (value <= lastVisitedNo) {
-                let a = map(value, maxValue, 5, 255, 100);
-                fill(30, a, a);
-                rect(j * r+1, i * r+1, r - 2, r - 2);
-            }
-        }
+function drawVisited(path, maxValue, lastVisitedIndex) {
+    for (let i = 0 ; i < lastVisitedIndex && i < path.visited.length; i++) {
+        let cell = path.visited[i];
+        let c = map(cell.number, maxValue, 5, 255, 100);
+        fill(30, c, c);
+        rect(cell.x * r + 1, cell.y * r + 1, r - 2, r - 2);
     }
-
-    lastVisitedNo++;
-
-    return lastVisitedNo >= maxValue;
 }
 
-function drawPath() {
-    if (path === null) {
-        alert("No path");
-        return;
-    }
-
+function drawPath(path, lastPathIndex) {
     stroke(228, 186, 34);
     strokeWeight(Math.sqrt(r));
-    for (let i = 0; i < path.length-1 && i <= lastPathNo; i++) {
-        let currx = path[i][1] * r + (r / 2);
-        let curry = path[i][0] * r + (r / 2);
-        let nextx = path[i + 1][1] * r + (r / 2);
-        let nexty = path[i + 1][0] * r + (r / 2);
+
+    let p = path.path;
+
+    for (let i = 0; i < p.length-1 && i <= lastPathIndex; i++) {
+        let currx = p[i][1] * r + (r / 2);
+        let curry = p[i][0] * r + (r / 2);
+        let nextx = p[i + 1][1] * r + (r / 2);
+        let nexty = p[i + 1][0] * r + (r / 2);
         line(currx, curry, nextx, nexty);
     }
-
-    lastPathNo++;
 
     noStroke();
     strokeWeight(1);
