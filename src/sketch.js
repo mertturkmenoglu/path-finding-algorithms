@@ -8,6 +8,9 @@ let lastPathNo;
 let cnv;
 let currAlg;
 let currHeuristic;
+let path;
+let gameStatus;
+let maxValue;
 
 function setup() {
     let navBar = document.getElementById('nav-bar');
