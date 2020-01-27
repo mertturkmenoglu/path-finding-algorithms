@@ -40,8 +40,13 @@ const gridLineStrokeWeight = 1.5;
 const gridTextSize = gridRadius * 0.75;
 
 const pathLineRadius = Math.sqrt(r);
-const helpButtonText = "Left click to add an object, right click to remove an object." +
-    "When you are ready, press 'Start'.";
+const helpButtonText = "Welcome to Path Finding Visualization\n" +
+    "You can find the shortest path between start(S) and end(E) points.\n" +
+    "Left click will add an object and right click will remove.\n" +
+    "You can choose your algorithm from top left corner.\n" +
+    "You can generate maze, remove all objects, remove path finding from top right corner.\n" +
+    "When you are ready, press 'Start' button.\n" +
+    "You can access this menu by clicking 'Help' button";
 
 const startCellColor = Object.freeze({
     r:  188,

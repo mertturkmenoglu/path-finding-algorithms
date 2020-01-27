@@ -5,6 +5,9 @@ let startButton;
 let helpButton;
 let clearButton;
 let resetButton;
+let modal;
+let modalCloseButton;
+let modalContentText;
 
 function initDOM() {
     algSelect = document.getElementById("alg-select");
@@ -52,7 +55,24 @@ function initDOM() {
     };
 
     helpButton.onclick = function () {
-        snackbarAlert(helpButtonText, snackbarTimeoutLong);
+        modal = document.getElementById('modal-box-help');
+        modal.style.display = 'block';
+    };
+
+    modal = document.getElementById('modal-box-help');
+    modal.style.display = 'none';
+    modalCloseButton = document.getElementById('modal-close');
+    modalCloseButton.onclick = () => {
+        modal.style.display = 'none';
+    };
+
+    modalContentText = document.getElementById('modal-content-text');
+    modalContentText.innerText = helpButtonText;
+
+    window.onclick = event => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
     };
 
     document.addEventListener('contextmenu', e => e.preventDefault());
