@@ -1,5 +1,5 @@
 # Path Finding Algorithms
-![GitHub](https://img.shields.io/github/license/mertturkmenoglu/a-star-algorithm) ![GitHub followers](https://img.shields.io/github/followers/mertturkmenoglu.svg?style=social)
+![GitHub deployments](https://img.shields.io/github/deployments/mertturkmenoglu/path-finding-algorithms/github-pages) ![GitHub](https://img.shields.io/github/license/mertturkmenoglu/a-star-algorithm) ![GitHub followers](https://img.shields.io/github/followers/mertturkmenoglu.svg?style=social)
 ***
 <img src="assets/example.gif" alt="Example" width="600" height="290" />
 
