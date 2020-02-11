@@ -1,5 +1,7 @@
 let algSelect;
 let hSelect;
+let hSelectLabel;
+let speedSelect;
 let mazeButton;
 let startButton;
 let helpButton;
@@ -12,6 +14,8 @@ let modalContentText;
 function initDOM() {
     algSelect = document.getElementById("alg-select");
     hSelect = document.getElementById('heuristic-select');
+    hSelectLabel = document.getElementById('heuristic-select-label');
+    speedSelect = document.getElementById('speed-select');
 
     algSelect.onchange = function () {
         snackbarAlert(`${algSelect.value} selected`, snackbarTimeoutShort);
@@ -19,14 +23,21 @@ function initDOM() {
 
         if (currAlg !== Algorithms["A*"]) {
             hSelect.style.display = 'none';
+            hSelectLabel.style.display = 'none';
         } else {
             hSelect.style.display = 'block';
+            hSelectLabel.style.display = 'flex';
         }
     };
 
     hSelect.onchange = function () {
         snackbarAlert(`${hSelect.value} selected`, snackbarTimeoutShort);
         currHeuristic = Heuristic[hSelect.value];
+    };
+
+    speedSelect.onchange = () => {
+        snackbarAlert(`${speedSelect.value} selected`, snackbarTimeoutShort);
+        currSpeed = Speed[speedSelect.value];
     };
 
     mazeButton = document.getElementById("maze-button");
@@ -44,6 +55,7 @@ function initDOM() {
         snackbarAlert('Everything removed', snackbarTimeoutShort);
         reset();
     };
+
     clearButton.onclick = function () {
         snackbarAlert('Clear path finding', snackbarTimeoutShort);
         clearPath();

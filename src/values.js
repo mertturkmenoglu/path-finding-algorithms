@@ -24,6 +24,12 @@ const Heuristic = Object.freeze({
     'Euclidean': 1
 });
 
+const Speed = Object.freeze({
+   'Fast': 3,
+   'Normal': 1,
+   'Slow': 0.5
+});
+
 const NodeType = Object.freeze({
     'dijkstra': 0,
     'a*': 1,
@@ -32,7 +38,6 @@ const NodeType = Object.freeze({
 
 const gridRadius = 32;
 const r = gridRadius; // Short name
-const drawSpeed = 3;
 const snackbarTimeoutShort = 3000;
 const snackbarTimeoutLong = 5000;
 const COLOR_BLACK = 0;

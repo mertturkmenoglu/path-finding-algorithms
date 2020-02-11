@@ -8,6 +8,7 @@ let lastPathNo;
 let cnv;
 let currAlg;
 let currHeuristic;
+let currSpeed;
 let path;
 let gameStatus;
 let maxValue;
@@ -31,6 +32,7 @@ function setup() {
     colCount = parseInt(w / r);
     currAlg = Algorithms["A*"];
     currHeuristic = Heuristic['manhattan'];
+    currSpeed = Speed['Fast'];
 
     initDOM();
     boardInit();
@@ -52,7 +54,7 @@ function draw() {
         drawGrid();
         drawBoard();
         drawVisited(path, maxValue, lastVisitedNo);
-        lastVisitedNo += drawSpeed;
+        lastVisitedNo += currSpeed;
 
         visitedDrawingCompleted = lastVisitedNo >= maxValue;
 
@@ -62,7 +64,7 @@ function draw() {
             }
 
             drawPath(path, lastPathNo);
-            lastPathNo += drawSpeed;
+            lastPathNo += currSpeed;
         }
     }
 }
