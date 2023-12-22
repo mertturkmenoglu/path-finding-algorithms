@@ -11,9 +11,15 @@ dependencies:
   '@radix-ui/react-select':
     specifier: ^2.0.0
     version: 2.0.0(@types/react-dom@18.2.17)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
+  '@types/heap':
+    specifier: ^0.2.34
+    version: 0.2.34
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
+  heap:
+    specifier: ^0.2.7
+    version: 0.2.7
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -1101,6 +1107,10 @@ packages:
   /@swc/types@0.1.5:
     resolution: {integrity: sha512-myfUej5naTBWnqOCc/MdVOLVjXUXtIA+NpDrDBKJtLLg2shUjBu3cZmB/85RyitKc55+lUUyl7oRfLOvkr2hsw==}
     dev: true
+
+  /@types/heap@0.2.34:
+    resolution: {integrity: sha512-x9gp0NZnQeFrgrb6O3Tq5KtvsuEhWbc2vlHfs4cDOKcHsanzI39lIGcPdND/MRyaKUbxNgKXfKGCQGnjjOWweQ==}
+    dev: false
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -2391,6 +2401,10 @@ packages:
     dependencies:
       function-bind: 1.1.2
     dev: true
+
+  /heap@0.2.7:
+    resolution: {integrity: sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==}
+    dev: false
 
   /human-signals@2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
