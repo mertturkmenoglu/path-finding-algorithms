@@ -10,6 +10,7 @@ import { AppContext } from '../contexts/AppContext';
 import { TAlgorithm, THeuristic } from '../../lib/GraphNode';
 import { Res, astar, bfs, dfs, dijkstra } from '../../lib/algorithms';
 import { posEq } from '../../lib/Pos';
+import HelpDialog from './HelpDialog';
 
 function AppBar(): React.ReactElement {
   const ctx = useContext(AppContext);
@@ -136,7 +137,7 @@ function AppBar(): React.ReactElement {
         <button onClick={reset}>Reset</button>
         <button onClick={clear}>Clear</button>
         <button onClick={start}>Start</button>
-        <button>Help</button>
+        <HelpDialog />
       </div>
     </header>
   );
