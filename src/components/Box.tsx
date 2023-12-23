@@ -1,5 +1,6 @@
 import { useContext, useRef } from 'react';
 import { AppContext } from '../contexts/AppContext';
+import { useBoxColor } from '../hooks/useBoxColor';
 
 interface BoxProps {
   row: number;
@@ -10,23 +11,11 @@ interface BoxProps {
 function Box({ row, col, change }: BoxProps): React.ReactElement {
   const ref = useRef<HTMLDivElement | null>(null);
   const ctx = useContext(AppContext);
+  const color = useBoxColor();
 
   const bgColor = (() => {
     const b = ctx.g.at(row, col);
-
-    if (b === 'Block') {
-      return '#2A2A2A';
-    }
-
-    if (b === 'Visited') {
-      return '#CBD5E1';
-    }
-
-    if (b === 'Path') {
-      return '#DB2777';
-    }
-
-    return '#FFFFFF';
+    return color(b);
   })();
 
   const char = (() => {
