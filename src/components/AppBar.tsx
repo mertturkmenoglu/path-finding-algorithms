@@ -69,12 +69,14 @@ function AppBar(): React.ReactElement {
     ctx.g.reset();
     ctx.setStart(null);
     ctx.setEnd(null);
-    ctx.trigger();
+    ctx.setResult(null);
+    // ctx.trigger();
   };
 
   const clear = () => {
     ctx.g.clearPathAndVisited();
-    ctx.trigger();
+    ctx.setResult(null);
+    // ctx.trigger();
   };
 
   const maze = () => {
