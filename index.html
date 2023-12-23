@@ -1,63 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <title>Path Finding Algorithms</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="src/style.css">
-    <link rel="shortcut icon" type="image/png" href="favicon.png">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.sound.min.js"></script>
-    <script src="src/dom.js"></script>
-    <script src="src/draw.js"></script>
-    <script src="src/events.js"></script>
-    <script src="src/GraphNode.js"></script>
-    <script src="src/mazeGeneration.js"></script>
-    <script src="src/pathFinding.js"></script>
-    <script src="src/pathFindingHelper.js"></script>
-    <script src="src/sketch.js"></script>
-    <script src="src/values.js"></script>
-</head>
-<body>
-    <div id="modal-box-help" class="modal">
-        <div class="modal-content">
-            <span>Path Finding</span>
-            <p></p>
-            <span id="modal-content-text"></span>
-            <p></p>
-            <button id="modal-close">Close &times;</button>
-        </div>
-    </div>
-    <div id="nav-bar">
-        <div class="nav-bar-select-group">
-            <label for="alg-select" class="nav-bar-label">Algorithm:</label>
-            <select id="alg-select" class="nav-bar-select">
-                <option value="A*" class="nav-bar-select-item">A*</option>
-                <option value="Dijkstra" class="nav-bar-select-item">Dijkstra</option>
-                <option value="BFS" class="nav-bar-select-item">BFS</option>
-            </select>
-            <label for="heuristic-select" class="nav-bar-label" id="heuristic-select-label">Heuristic:</label>
-            <select id="heuristic-select" class="nav-bar-select">
-                <option value="Manhattan" class="nav-bar-select-item">Manhattan</option>
-                <option value="Euclidean" class="nav-bar-select-item">Euclidean</option>
-            </select>
-            <label for="speed-select" class="nav-bar-label">Speed:</label>
-            <select id="speed-select" class="nav-bar-select">
-                <option value="Fast">Fast</option>
-                <option value="Normal">Normal</option>
-                <option value="Slow">Slow</option>
-            </select>
-        </div>
-        <div class="nav-bar-button-group">
-            <button id="maze-button"  class="nav-bar-button-item">Generate Maze</button>
-            <button id="reset-button" class="nav-bar-button-item">Reset</button>
-            <button id="clear-button" class="nav-bar-button-item">Clear</button>
-            <button id="start-button" class="nav-bar-button-item">Start</button>
-            <button id="help-button"  class="nav-bar-button-item">Help</button>
-        </div>
-    </div>
-    <div id="container">
-        <div id="snackbar"></div>
-    </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
