@@ -23,10 +23,10 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     className={clsx(
       'flex h-9 w-full items-center justify-between',
-      'whitespace-nowrap rounded-md border border-black',
+      'whitespace-nowrap rounded-md border border-pink-600',
       'bg-transparent px-3 py-2 text-sm shadow-sm',
-      'ring-offset-black placeholder:text-slate-600',
-      'focus:outline-none focus:ring-1 focus:ring-black disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+      'ring-offset-pink-600 placeholder:text-slate-600',
+      'focus:outline-none focus:ring-2 focus:ring-pink-600 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
       className
     )}
     {...props}
@@ -119,7 +119,7 @@ const SelectItem = React.forwardRef<
     ref={ref}
     className={clsx(
       'relative flex w-full cursor-default select-none items-center rounded-sm',
-      'py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-sky-600 focus:text-sky-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-pink-600 focus:text-pink-200 rounded data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       className
     )}
     {...props}
