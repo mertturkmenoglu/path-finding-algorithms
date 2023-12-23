@@ -8,7 +8,9 @@ export function useGrid(resolution: number) {
   const [g] = useState(() => new Grid());
 
   useEffect(() => {
-    const rows = Math.floor((height - 100) / resolution);
+    const el = document.getElementById('grid-start');
+    const top = el ? el.offsetTop + resolution : 100;
+    const rows = Math.floor((height - top) / resolution);
     const cols = Math.floor(width / resolution);
 
     if (rows > 0 && cols > 0) {
