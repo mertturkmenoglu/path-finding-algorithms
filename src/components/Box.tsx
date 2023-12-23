@@ -17,12 +17,16 @@ function Box({ row, col, change }: BoxProps): React.ReactElement {
       return '#2a2a2a';
     }
 
+    if (b === 'Visited') {
+      return '#0000dd';
+    }
+
     return b === 'Path' ? '#FFFF00' : '#FFF';
   })();
 
   const char = (() => {
     const ch = ctx.g.getSingleCharAt(row, col);
-    return !['B', 'P'].includes(ch) ? ch : '';
+    return !['B', 'P', 'V'].includes(ch) ? ch : '';
   })();
 
   return (

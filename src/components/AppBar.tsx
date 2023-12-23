@@ -8,22 +8,42 @@ import {
 } from './Select';
 import { AppContext } from '../contexts/AppContext';
 import { TAlgorithm, THeuristic } from '../../lib/GraphNode';
-import { bfs } from '../../lib/algorithms';
+import { astar, bfs } from '../../lib/algorithms';
 import { posEq } from '../../lib/Pos';
 
 function AppBar(): React.ReactElement {
   const ctx = useContext(AppContext);
 
   const start = () => {
-    // temp, only bfs
-    ctx.g.clearPath();
-    const res = bfs(ctx.g, ctx.start!, ctx.end!);
-    for (const p of res) {
+    ctx.g.clearPathAndVisited();
+
+    const res =
+      ctx.algorithm === 'astar'
+        ? astar(ctx.g, ctx.start!, ctx.end!, 'manhattan', 'astar')
+        : bfs(ctx.g, ctx.start!, ctx.end!);
+
+    if (res.path.length === 0) {
+      alert('Cannot find a path');
+      return;
+    }
+
+    for (const p of res.path) {
       if (posEq(p.pos, ctx.start!) || posEq(p.pos, ctx.end!)) {
         continue;
       }
       ctx.g.setPos(p.pos, 'Path');
     }
+
+    for (const p of res.visited) {
+      if (posEq(p.pos, ctx.start!) || posEq(p.pos, ctx.end!)) {
+        continue;
+      }
+      if (res.path.find((v) => posEq(v.pos, p.pos))) {
+        continue;
+      }
+      ctx.g.setPos(p.pos, 'Visited');
+    }
+
     ctx.trigger();
   };
 
@@ -35,7 +55,7 @@ function AppBar(): React.ReactElement {
   };
 
   const clear = () => {
-    ctx.g.clearPath();
+    ctx.g.clearPathAndVisited();
     ctx.trigger();
   };
 
@@ -59,8 +79,14 @@ function AppBar(): React.ReactElement {
         {ctx.algorithm === 'astar' && (
           <div className="ml-8 flex items-center space-x-2">
             <span>Heuristic</span>
-            <Select onValueChange={(val: THeuristic) => ctx.setHeuristic(val)}>
-              <SelectTrigger className="w-[180px]">
+            <Select
+              onValueChange={(val: THeuristic) => ctx.setHeuristic(val)}
+              value={ctx.heuristic}
+            >
+              <SelectTrigger
+                className="w-[180px]"
+                defaultValue={ctx.heuristic}
+              >
                 <SelectValue placeholder="Heuristic" />
               </SelectTrigger>
               <SelectContent defaultValue={ctx.heuristic}>
