@@ -57,9 +57,7 @@ function Box({ row, col, change }: BoxProps): React.ReactElement {
     const find = (v: GraphNode | BfsNode) => posEq(v.pos, [row, col]);
 
     const arr = el === 'Path' ? ctx.result.path : ctx.result.visited;
-    const coef = el === 'Path' ? 25 : 2;
     const visitedIndex = arr.findIndex(find);
-    const index = arr.findIndex((v) => posEq(v.pos, [row, col]));
     const len = ctx.result.visited.length - ctx.result.path.length;
 
     if (el !== 'Path') {
