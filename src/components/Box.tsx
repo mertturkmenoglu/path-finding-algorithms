@@ -3,6 +3,7 @@ import { AppContext } from '../contexts/AppContext';
 import { useBoxColor } from '../hooks/useBoxColor';
 import { posEq } from '../../lib/Pos';
 import anime from 'animejs';
+import { useBoxElement } from '../hooks/useBoxElement';
 
 interface BoxProps {
   row: number;
@@ -14,6 +15,7 @@ function Box({ row, col, change }: BoxProps): React.ReactElement {
   const ref = useRef<HTMLDivElement | null>(null);
   const ctx = useContext(AppContext);
   const color = useBoxColor();
+  const element = useBoxElement();
   const [, setPrevBgColor] = useState('#FFFFFF');
 
   const bgColor = (() => {
@@ -21,9 +23,9 @@ function Box({ row, col, change }: BoxProps): React.ReactElement {
     return color(el);
   })();
 
-  const char = (() => {
+  const inner = (() => {
     const ch = ctx.g.getSingleCharAt(row, col);
-    return !['B', 'P', 'V'].includes(ch) ? ch : '';
+    return element(ch);
   })();
 
   useEffect(() => {
@@ -88,7 +90,7 @@ function Box({ row, col, change }: BoxProps): React.ReactElement {
       draggable={true}
       onDragEnter={() => change(row, col)}
     >
-      {char}
+      {inner}
     </div>
   );
 }

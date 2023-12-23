@@ -1,16 +1,17 @@
 import { useContext } from 'react';
 import { AppContext } from '../contexts/AppContext';
 import { useBoxColor } from '../hooks/useBoxColor';
+import { useBoxElement } from '../hooks/useBoxElement';
 
 interface LegendElement {
   bgColor: string;
-  text?: string;
+  inner?: React.ReactNode;
   description: string;
 }
 
 function LegendElement({
   bgColor,
-  text = '',
+  inner,
   description,
 }: LegendElement): React.ReactElement {
   const ctx = useContext(AppContext);
@@ -25,7 +26,7 @@ function LegendElement({
           backgroundColor: bgColor,
         }}
       >
-        {text}
+        {inner ?? <></>}
       </div>
       <span className="text-xs font-light text-black">{description}</span>
     </div>
@@ -34,35 +35,36 @@ function LegendElement({
 
 function Legend(): React.ReactElement {
   const color = useBoxColor();
+  const element = useBoxElement();
   return (
     <div className="mt-2 mx-auto flex justify-center space-x-4">
       <LegendElement
         bgColor={color('Block')}
-        text=""
+        inner=""
         description="Block"
       />
 
       <LegendElement
         bgColor={color('Path')}
-        text=""
+        inner=""
         description="Path"
       />
 
       <LegendElement
         bgColor={color('Visited')}
-        text=""
+        inner=""
         description="Visited"
       />
 
       <LegendElement
         bgColor={color('Start')}
-        text="S"
+        inner={element('S')}
         description="Start"
       />
 
       <LegendElement
         bgColor={color('End')}
-        text="E"
+        inner={element('E')}
         description="End"
       />
     </div>
