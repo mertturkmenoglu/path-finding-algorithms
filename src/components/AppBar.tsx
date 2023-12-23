@@ -29,10 +29,14 @@ function AppBar(): React.ReactElement {
 
   const reset = () => {
     ctx.g.reset();
+    ctx.setStart(null);
+    ctx.setEnd(null);
+    ctx.trigger((x) => x + 1);
   };
 
   const clear = () => {
     ctx.g.clearPath();
+    ctx.trigger((x) => x + 1);
   };
 
   return (
