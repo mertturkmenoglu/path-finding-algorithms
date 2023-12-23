@@ -2,6 +2,11 @@ import { BfsNode, GraphNode, TAlgorithm, THeuristic } from './GraphNode';
 import { Grid } from './Grid';
 import { Pos, posEq } from './Pos';
 
+export type Res =
+  | PathFindingResult<GraphNode>
+  | PathFindingResult<BfsNode>
+  | null;
+
 export interface PathFindingResult<T> {
   path: T[];
   visited: T[];

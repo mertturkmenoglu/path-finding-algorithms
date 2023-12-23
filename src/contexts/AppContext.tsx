@@ -2,6 +2,7 @@ import React from 'react';
 import { TAlgorithm, THeuristic } from '../../lib/GraphNode';
 import { Grid } from '../../lib/Grid';
 import { Pos } from '../../lib/Pos';
+import { Res } from '../../lib/algorithms';
 
 interface AppContextState {
   g: Grid;
@@ -17,6 +18,8 @@ interface AppContextState {
   setEnd: React.Dispatch<React.SetStateAction<Pos | null>>;
   t: number;
   trigger: () => void;
+  result: Res;
+  setResult: React.Dispatch<React.SetStateAction<Res>>;
 }
 
 export const appContextDefaultValues: AppContextState = {
@@ -28,11 +31,13 @@ export const appContextDefaultValues: AppContextState = {
   start: null,
   end: null,
   t: 0,
+  result: null,
   setAlgorithm: () => {},
   setHeuristic: () => {},
   setStart: () => {},
   setEnd: () => {},
   trigger: () => {},
+  setResult: () => {},
 };
 
 export const AppContext = React.createContext<AppContextState>(

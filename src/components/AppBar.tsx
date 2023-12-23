@@ -7,19 +7,8 @@ import {
   SelectValue,
 } from './Select';
 import { AppContext } from '../contexts/AppContext';
-import {
-  BfsNode,
-  GraphNode,
-  TAlgorithm,
-  THeuristic,
-} from '../../lib/GraphNode';
-import {
-  PathFindingResult,
-  astar,
-  bfs,
-  dfs,
-  dijkstra,
-} from '../../lib/algorithms';
+import { TAlgorithm, THeuristic } from '../../lib/GraphNode';
+import { Res, astar, bfs, dfs, dijkstra } from '../../lib/algorithms';
 import { posEq } from '../../lib/Pos';
 
 function AppBar(): React.ReactElement {
@@ -38,8 +27,7 @@ function AppBar(): React.ReactElement {
       return;
     }
 
-    let res: PathFindingResult<GraphNode> | PathFindingResult<BfsNode> | null =
-      null;
+    let res: Res = null;
 
     if (ctx.algorithm === 'astar') {
       res = astar(ctx.g, ctx.start, ctx.end, ctx.heuristic, 'astar');
@@ -53,6 +41,8 @@ function AppBar(): React.ReactElement {
       alert('Cannot find a path');
       return;
     }
+
+    ctx.setResult(res);
 
     for (const p of res.path) {
       if (posEq(p.pos, ctx.start!) || posEq(p.pos, ctx.end!)) {

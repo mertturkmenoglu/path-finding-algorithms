@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useGrid } from '../hooks/useGrid';
 import { AppContext, appContextDefaultValues } from './AppContext';
 import { Pos } from '../../lib/Pos';
+import { Res } from '../../lib/algorithms';
 
 interface AppContextProviderProps {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
   const [start, setStart] = useState<Pos | null>(null);
   const [end, setEnd] = useState<Pos | null>(null);
   const [t, trigger] = useState(appContextDefaultValues.t);
+  const [result, setResult] = useState<Res>(appContextDefaultValues.result);
 
   return (
     <AppContext.Provider
@@ -31,6 +33,8 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
         setEnd,
         t,
         trigger: () => trigger((x) => x + 1),
+        result,
+        setResult,
       }}
     >
       {children}
