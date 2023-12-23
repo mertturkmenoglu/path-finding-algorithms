@@ -1,18 +1,11 @@
-import { GraphNode, TAlgorithm, THeuristic } from './GraphNode';
+import { BfsNode, GraphNode, TAlgorithm, THeuristic } from './GraphNode';
 import { Grid } from './Grid';
 import { Pos, posEq } from './Pos';
 import Heap from 'heap';
 
-const moves: Pos[] = [
-  [0, -1],
-  [0, 1],
-  [-1, 0],
-  [1, 0],
-];
-
-function constructPath(child: GraphNode): GraphNode[] {
-  const path: GraphNode[] = [];
-  let current: GraphNode | null = child;
+function constructPath<T extends { parent: T | null }>(child: T): T[] {
+  const path: T[] = [];
+  let current: T | null = child;
 
   while (current !== null) {
     path.push(current);
@@ -40,14 +33,9 @@ export function astar(
 
   while (!open.empty()) {
     const q = open.pop()!;
-    const children: GraphNode[] = [];
-
-    for (const [dr, dc] of moves) {
-      const newPos: Pos = [q.pos[0] + dr, q.pos[1] + dc];
-      if (g.isValidPos(newPos)) {
-        children.push(new GraphNode('astar', heuristic, q, newPos));
-      }
-    }
+    const children = g
+      .getCardinalNeighboursPos(q.pos)
+      .map((p) => new GraphNode('astar', heuristic, q, p));
 
     for (const successor of children) {
       if (posEq(successor.pos, end)) {
@@ -78,4 +66,33 @@ export function astar(
 
 export function dijkstra(g: Grid, start: Pos, end: Pos): GraphNode[] {
   return astar(g, start, end, 'euclidean', 'dijkstra');
+}
+
+export function bfs(g: Grid, start: Pos, end: Pos): BfsNode[] {
+  const startNode = new BfsNode(null, start);
+  const endNode = new BfsNode(null, end);
+  const open: BfsNode[] = [startNode];
+  const closed: BfsNode[] = [];
+
+  while (open.length > 0) {
+    const q = open.shift()!;
+    const children = g
+      .getCardinalNeighboursPos(q.pos)
+      .map((p) => new BfsNode(q, p));
+
+    for (const child of children) {
+      if (child.isEqual(endNode)) {
+        return constructPath(child);
+      }
+
+      if (closed.some((n) => posEq(n.pos, child.pos))) {
+        continue;
+      } else {
+        closed.push(child);
+        open.push(child);
+      }
+    }
+  }
+
+  return [];
 }
