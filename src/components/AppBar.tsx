@@ -70,13 +70,11 @@ function AppBar(): React.ReactElement {
     ctx.setStart(null);
     ctx.setEnd(null);
     ctx.setResult(null);
-    // ctx.trigger();
   };
 
   const clear = () => {
     ctx.g.clearPathAndVisited();
     ctx.setResult(null);
-    // ctx.trigger();
   };
 
   const maze = () => {
@@ -126,7 +124,7 @@ function AppBar(): React.ReactElement {
               </SelectTrigger>
               <SelectContent defaultValue={ctx.heuristic}>
                 <SelectItem value="manhattan">Manhattan</SelectItem>
-                <SelectItem value="euclidian">Euclidian</SelectItem>
+                <SelectItem value="euclidean">Euclidean</SelectItem>
               </SelectContent>
             </Select>
           </div>

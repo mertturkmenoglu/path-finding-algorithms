@@ -62,10 +62,10 @@ export class GraphNode {
 
     const [dx, dy] = posDiff(this.pos, this.parent.pos);
 
-    if (dx === 0 || dy === 0) {
-      this.g = this.parent.g + 1;
-    } else {
+    if (dx !== 0 && dy !== 0) {
       this.g = this.parent.g + Math.SQRT2;
+    } else {
+      this.g = this.parent.g + 1;
     }
   }
 

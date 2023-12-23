@@ -53,9 +53,14 @@ export function astar(
       };
     }
 
-    const children = g
-      .getCardinalNeighboursPos(q.pos)
-      .map((p) => new GraphNode(algorithm, heuristic, q, p));
+    const neighbours =
+      heuristic === 'euclidean'
+        ? g.getAllNeighboursPos(q.pos)
+        : g.getCardinalNeighboursPos(q.pos);
+
+    const children = neighbours.map(
+      (p) => new GraphNode(algorithm, heuristic, q, p)
+    );
 
     for (const successor of children) {
       successor.updateValues(endNode);

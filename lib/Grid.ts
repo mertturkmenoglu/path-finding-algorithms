@@ -10,6 +10,18 @@ export type GridElement =
 
 export class Grid {
   private mtr: GridElement[][] = [];
+  private readonly cardinalMoveset: Pos[] = [
+    [0, -1],
+    [0, 1],
+    [-1, 0],
+    [1, 0],
+  ];
+  private readonly diagonalMoveset: Pos[] = [
+    [-1, -1],
+    [-1, 1],
+    [1, -1],
+    [1, 1],
+  ];
 
   constructor(list: GridElement[][] = []) {
     this.mtr = list;
@@ -120,18 +132,12 @@ export class Grid {
     return this.isPosInGrid(pos) && this.isWalkable(pos);
   }
 
-  getCardinalNeighboursPos(pos: Pos): Pos[] {
+  private neighbours(pos: Pos, moveset: Pos[]): Pos[] {
     const [r, c] = pos;
-    const moves: Pos[] = [
-      [0, -1],
-      [0, 1],
-      [-1, 0],
-      [1, 0],
-    ];
 
     const neighbours: Pos[] = [];
 
-    for (const [dr, dc] of moves) {
+    for (const [dr, dc] of moveset) {
       const newPos: Pos = [r + dr, c + dc];
       if (this.isValidPos(newPos)) {
         neighbours.push(newPos);
@@ -139,6 +145,21 @@ export class Grid {
     }
 
     return neighbours;
+  }
+
+  getCardinalNeighboursPos(pos: Pos): Pos[] {
+    return this.neighbours(pos, this.cardinalMoveset);
+  }
+
+  getDiagonalNeighboursPos(pos: Pos): Pos[] {
+    return this.neighbours(pos, this.diagonalMoveset);
+  }
+
+  getAllNeighboursPos(pos: Pos): Pos[] {
+    return this.neighbours(pos, [
+      ...this.cardinalMoveset,
+      ...this.diagonalMoveset,
+    ]);
   }
 
   forEach(fn: (r: number, c: number, el: GridElement) => void): void {
