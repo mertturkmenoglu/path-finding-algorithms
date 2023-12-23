@@ -16,7 +16,7 @@ interface AppContextState {
   end: Pos | null;
   setEnd: React.Dispatch<React.SetStateAction<Pos | null>>;
   t: number;
-  trigger: React.Dispatch<React.SetStateAction<number>>;
+  trigger: () => void;
 }
 
 export const appContextDefaultValues: AppContextState = {

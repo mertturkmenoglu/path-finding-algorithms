@@ -30,7 +30,7 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
         end,
         setEnd,
         t,
-        trigger,
+        trigger: () => trigger((x) => x + 1),
       }}
     >
       {children}

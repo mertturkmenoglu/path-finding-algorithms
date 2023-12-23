@@ -9,14 +9,14 @@ function GridComponent(): React.ReactElement {
     if (ctx.start === null) {
       ctx.setStart([r, c]);
       ctx.g.set(r, c, 'Start');
-      ctx.trigger((x) => x + 1);
+      ctx.trigger();
       return;
     }
 
     if (ctx.end === null) {
       ctx.setEnd([r, c]);
       ctx.g.set(r, c, 'End');
-      ctx.trigger((x) => x + 1);
+      ctx.trigger();
       return;
     }
 
@@ -25,21 +25,21 @@ function GridComponent(): React.ReactElement {
     if (prev === 'Start') {
       ctx.setStart(null);
       ctx.g.set(r, c, 'Empty');
-      ctx.trigger((x) => x + 1);
+      ctx.trigger();
       return;
     }
 
     if (prev === 'End') {
       ctx.setEnd(null);
       ctx.g.set(r, c, 'Empty');
-      ctx.trigger((x) => x + 1);
+      ctx.trigger();
       return;
     }
 
     const next = prev === 'Empty' ? 'Block' : 'Empty';
 
     ctx.g.set(r, c, next);
-    ctx.trigger((x) => x + 1);
+    ctx.trigger();
   };
 
   const mtr = ctx.g.rows();

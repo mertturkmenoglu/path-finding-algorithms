@@ -24,19 +24,19 @@ function AppBar(): React.ReactElement {
       }
       ctx.g.setPos(p.pos, 'Path');
     }
-    ctx.trigger((x) => x + 1);
+    ctx.trigger();
   };
 
   const reset = () => {
     ctx.g.reset();
     ctx.setStart(null);
     ctx.setEnd(null);
-    ctx.trigger((x) => x + 1);
+    ctx.trigger();
   };
 
   const clear = () => {
     ctx.g.clearPath();
-    ctx.trigger((x) => x + 1);
+    ctx.trigger();
   };
 
   return (
