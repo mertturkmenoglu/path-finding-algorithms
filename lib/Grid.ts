@@ -96,6 +96,22 @@ export class Grid {
     return map[el];
   }
 
+  randomFill(chance: number): void {
+    this.reset();
+    this.forEach((i, j) => {
+      this.set(i, j, Math.random() > chance ? 'Block' : 'Empty');
+    });
+  }
+
+  private rand(min: number, max: number): number {
+    return Math.random() * (max - min) + min;
+  }
+
+  getRandomPos(): Pos {
+    const [rows, cols] = this.dims();
+    return [this.rand(0, rows), this.rand(0, cols)];
+  }
+
   isWalkable(pos: Pos): boolean {
     return this.atPos(pos) !== 'Block';
   }

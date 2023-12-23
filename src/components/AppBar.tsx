@@ -85,6 +85,12 @@ function AppBar(): React.ReactElement {
     ctx.trigger();
   };
 
+  const random = () => {
+    reset();
+    ctx.g.randomFill(0.6);
+    ctx.trigger();
+  };
+
   return (
     <header className="flex items-center justify-between w-full bg-black/80 text-white py-2 px-8">
       <div className="flex items-center ">
@@ -135,6 +141,7 @@ function AppBar(): React.ReactElement {
         >
           GitHub
         </a>
+        <button onClick={random}>Random</button>
         <button onClick={maze}>Generate Maze</button>
         <button onClick={reset}>Reset</button>
         <button onClick={clear}>Clear</button>
