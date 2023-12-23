@@ -28,9 +28,9 @@ export class BfsNode {
 }
 
 export class GraphNode {
-  public f = Number.MAX_SAFE_INTEGER;
-  public g = Number.MAX_SAFE_INTEGER;
-  public h = Number.MAX_SAFE_INTEGER;
+  public f = 0;
+  public g = 0;
+  public h = 0;
 
   constructor(
     public readonly algorithm: TAlgorithm,
