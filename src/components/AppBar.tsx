@@ -125,6 +125,13 @@ function AppBar(): React.ReactElement {
       </div>
 
       <div className="flex items-center space-x-4">
+        <a
+          href="https://github.com/mertturkmenoglu/path-finding-algorithms"
+          target="_blank"
+          rel="noopener"
+        >
+          GitHub
+        </a>
         <button onClick={maze}>Generate Maze</button>
         <button onClick={reset}>Reset</button>
         <button onClick={clear}>Clear</button>
