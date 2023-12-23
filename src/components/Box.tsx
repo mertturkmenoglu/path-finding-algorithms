@@ -4,6 +4,7 @@ import { useBoxColor } from '../hooks/useBoxColor';
 import { posEq } from '../../lib/Pos';
 import anime from 'animejs';
 import { useBoxElement } from '../hooks/useBoxElement';
+import { BfsNode, GraphNode } from '../../lib/GraphNode';
 
 interface BoxProps {
   row: number;
@@ -53,28 +54,51 @@ function Box({ row, col, change }: BoxProps): React.ReactElement {
       return;
     }
 
+    const find = (v: GraphNode | BfsNode) => posEq(v.pos, [row, col]);
+
     const arr = el === 'Path' ? ctx.result.path : ctx.result.visited;
     const coef = el === 'Path' ? 25 : 2;
+    const visitedIndex = arr.findIndex(find);
     const index = arr.findIndex((v) => posEq(v.pos, [row, col]));
     const len = ctx.result.visited.length - ctx.result.path.length;
-    let offset = index * coef;
 
-    if (el === 'Path') {
-      offset += len * 2;
+    if (el !== 'Path') {
+      const offset = visitedIndex * 2;
+
+      anime
+        .timeline({
+          duration: 200,
+        })
+        .add(
+          {
+            targets: ref.current,
+            easing: 'linear',
+            background: bgColor,
+          },
+          offset
+        );
+    } else {
+      anime
+        .timeline({
+          duration: 500,
+        })
+        .add(
+          {
+            targets: ref.current,
+            easing: 'linear',
+            background: ['#FFF', '#CBD5E1'],
+          },
+          visitedIndex * 25
+        )
+        .add(
+          {
+            targets: ref.current,
+            easing: 'linear',
+            background: ['#CBD5E1', bgColor],
+          },
+          `+=${visitedIndex * 25 + len * 2}`
+        );
     }
-
-    anime
-      .timeline({
-        duration: 200,
-      })
-      .add(
-        {
-          targets: ref.current,
-          easing: 'linear',
-          background: bgColor,
-        },
-        offset
-      );
     setPrevBgColor(bgColor);
   }, [bgColor, ref.current, ctx.result]);
 
