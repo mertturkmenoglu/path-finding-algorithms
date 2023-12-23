@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { Grid } from '../../lib/Grid';
 
 interface BoxProps {
@@ -10,18 +9,20 @@ interface BoxProps {
 }
 
 function Box({ row, col, res, g, change }: BoxProps): React.ReactElement {
-  const bgColor = useMemo(() => {
-    if (g.at(row, col) === 'Block') {
+  const bgColor = (() => {
+    const b = g.at(row, col);
+
+    if (b === 'Block') {
       return '#2a2a2a';
     }
 
-    return g.at(row, col) === 'Path' ? '#ffff00' : '#FFF';
-  }, [g, row, col]);
+    return b === 'Path' ? '#FFFF00' : '#FFF';
+  })();
 
-  const char = useMemo(() => {
+  const char = (() => {
     const ch = g.getSingleCharAt(row, col);
     return !['B', 'P'].includes(ch) ? ch : '';
-  }, [g, row, col]);
+  })();
 
   return (
     <div
