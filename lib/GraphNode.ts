@@ -4,6 +4,29 @@ export type TAlgorithm = 'astar' | 'dijkstra' | 'bfs';
 
 export type THeuristic = 'manhattan' | 'euclidean';
 
+export class BfsNode {
+  private g: number = 0;
+
+  constructor(
+    public parent: BfsNode | null,
+    public pos: Pos
+  ) {
+    if (parent !== null) {
+      const [dx, dy] = posDiff(pos, parent.pos);
+
+      if (dx === 0 || dy === 0) {
+        this.g = parent.g + 1;
+      } else {
+        this.g = parent.g + Math.SQRT2;
+      }
+    }
+  }
+
+  isEqual(other: BfsNode): boolean {
+    return posEq(this.pos, other.pos);
+  }
+}
+
 export class GraphNode {
   public f = Number.MAX_SAFE_INTEGER;
   public g = Number.MAX_SAFE_INTEGER;
