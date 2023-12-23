@@ -1,4 +1,4 @@
-import { Pos } from "./Pos";
+import { Pos } from './Pos';
 
 type GridElement = 'Empty' | 'Start' | 'End' | 'Block' | 'Path';
 
@@ -76,6 +76,16 @@ export class Grid {
     }
   }
 
+  reset(fill: GridElement = 'Empty'): void {
+    const [rows, cols] = this.dims();
+
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        this.set(i, j, fill);
+      }
+    }
+  }
+
   getSingleCharAt(row: number, col: number): string {
     const el = this.at(row, col);
     const map: Record<GridElement, string> = {
@@ -94,6 +104,27 @@ export class Grid {
 
   isValidPos(pos: Pos): boolean {
     return this.isPosInGrid(pos) && this.isWalkable(pos);
+  }
+
+  getCardinalNeighboursPos(pos: Pos): Pos[] {
+    const [r, c] = pos;
+    const moves: Pos[] = [
+      [0, -1],
+      [0, 1],
+      [-1, 0],
+      [1, 0],
+    ];
+
+    const neighbours: Pos[] = [];
+
+    for (const [dr, dc] of moves) {
+      const newPos: Pos = [r + dr, c + dc];
+      if (this.isValidPos(newPos)) {
+        neighbours.push(newPos);
+      }
+    }
+
+    return neighbours;
   }
 
   toString(): string {
