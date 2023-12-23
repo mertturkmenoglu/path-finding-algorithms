@@ -64,26 +64,17 @@ export class Grid {
   }
 
   clearPathAndVisited(): void {
-    const [rows, cols] = this.dims();
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        const el = this.at(i, j);
-
-        if (el === 'Path' || el === 'Visited') {
-          this.set(i, j, 'Empty');
-        }
+    this.forEach((i, j, el) => {
+      if (el === 'Path' || el === 'Visited') {
+        this.set(i, j, 'Empty');
       }
-    }
+    });
   }
 
   reset(fill: GridElement = 'Empty'): void {
-    const [rows, cols] = this.dims();
-
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        this.set(i, j, fill);
-      }
-    }
+    this.forEach((i, j) => {
+      this.set(i, j, fill);
+    });
   }
 
   getSingleCharAt(row: number, col: number): string {
@@ -126,6 +117,16 @@ export class Grid {
     }
 
     return neighbours;
+  }
+
+  forEach(fn: (r: number, c: number, el: GridElement) => void): void {
+    const [rows, cols] = this.dims();
+
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        fn(i, j, this.at(i, j));
+      }
+    }
   }
 
   toString(): string {
