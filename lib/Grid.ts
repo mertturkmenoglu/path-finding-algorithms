@@ -1,6 +1,12 @@
 import { Pos } from './Pos';
 
-type GridElement = 'Empty' | 'Start' | 'End' | 'Block' | 'Path' | 'Visited';
+export type GridElement =
+  | 'Empty'
+  | 'Start'
+  | 'End'
+  | 'Block'
+  | 'Path'
+  | 'Visited';
 
 export class Grid {
   private mtr: GridElement[][] = [];
