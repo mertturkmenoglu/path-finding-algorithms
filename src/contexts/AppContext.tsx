@@ -27,7 +27,7 @@ export const appContextDefaultValues: AppContextState = {
   algorithm: 'astar',
   heuristic: 'manhattan',
   animSpeed: '',
-  resolution: 32,
+  resolution: 24,
   start: null,
   end: null,
   t: 0,
