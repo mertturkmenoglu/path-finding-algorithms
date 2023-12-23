@@ -18,10 +18,14 @@ function Box({ row, col, change }: BoxProps): React.ReactElement {
     }
 
     if (b === 'Visited') {
-      return '#0000dd';
+      return '#cbd5e1';
     }
 
-    return b === 'Path' ? '#FFFF00' : '#FFF';
+    if (b === 'Path') {
+      return '#db2777';
+    }
+
+    return '#FFF';
   })();
 
   const char = (() => {
