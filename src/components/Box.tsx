@@ -1,16 +1,17 @@
-import { Grid } from '../../lib/Grid';
+import { useContext } from 'react';
+import { AppContext } from '../contexts/AppContext';
 
 interface BoxProps {
   row: number;
   col: number;
-  res: number;
-  g: Grid;
   change: (row: number, col: number) => void;
 }
 
-function Box({ row, col, res, g, change }: BoxProps): React.ReactElement {
+function Box({ row, col, change }: BoxProps): React.ReactElement {
+  const ctx = useContext(AppContext);
+
   const bgColor = (() => {
-    const b = g.at(row, col);
+    const b = ctx.g.at(row, col);
 
     if (b === 'Block') {
       return '#2a2a2a';
@@ -20,7 +21,7 @@ function Box({ row, col, res, g, change }: BoxProps): React.ReactElement {
   })();
 
   const char = (() => {
-    const ch = g.getSingleCharAt(row, col);
+    const ch = ctx.g.getSingleCharAt(row, col);
     return !['B', 'P'].includes(ch) ? ch : '';
   })();
 
@@ -29,8 +30,8 @@ function Box({ row, col, res, g, change }: BoxProps): React.ReactElement {
       key={`row-${row}-col-${col}`}
       className="border border-black flex justify-center items-center"
       style={{
-        width: res,
-        height: res,
+        width: ctx.resolution,
+        height: ctx.resolution,
         background: bgColor,
       }}
       onClick={() => change(row, col)}
