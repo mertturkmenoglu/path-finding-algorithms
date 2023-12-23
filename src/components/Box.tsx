@@ -1,7 +1,5 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { AppContext } from '../contexts/AppContext';
-import anime from 'animejs/lib/anime.es';
-import { posEq } from '../../lib/Pos';
 
 interface BoxProps {
   row: number;
@@ -17,18 +15,18 @@ function Box({ row, col, change }: BoxProps): React.ReactElement {
     const b = ctx.g.at(row, col);
 
     if (b === 'Block') {
-      return '#2a2a2a';
+      return '#2A2A2A';
     }
 
     if (b === 'Visited') {
-      return '#cbd5e1';
+      return '#CBD5E1';
     }
 
     if (b === 'Path') {
-      return '#db2777';
+      return '#DB2777';
     }
 
-    return '#FFF';
+    return '#FFFFFF';
   })();
 
   const char = (() => {
@@ -36,49 +34,15 @@ function Box({ row, col, change }: BoxProps): React.ReactElement {
     return !['B', 'P', 'V'].includes(ch) ? ch : '';
   })();
 
-  useEffect(() => {
-    const dur = () => {
-      if (char === '') {
-        return 0;
-      }
-
-      if (char === 'P') {
-        const index = ctx.result?.path.findIndex((v) =>
-          posEq(v.pos, [row, col])
-        );
-        return (index ?? 0) * 10;
-      }
-
-      if (char === 'V') {
-        const index = ctx.result?.visited.findIndex((v) =>
-          posEq(v.pos, [row, col])
-        );
-
-        return (index ?? 0) * 10;
-      }
-
-      return 1;
-    };
-
-    if (ref.current !== null) {
-      anime
-        .timeline({
-          targets: ref.current,
-          duration: 2000,
-        })
-        .add({ targets: ref.current, background: bgColor }, dur());
-    }
-  }, [bgColor, ctx.result, char]);
-
   return (
     <div
       ref={ref}
       key={`row-${row}-col-${col}`}
-      className="border border-black flex justify-center items-center"
+      className="border border-zinc-700 flex justify-center items-center"
       style={{
         width: ctx.resolution,
         height: ctx.resolution,
-        // background: bgColor,
+        backgroundColor: bgColor,
       }}
       onClick={() => change(row, col)}
       draggable={true}
