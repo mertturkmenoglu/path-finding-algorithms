@@ -1,6 +1,6 @@
 import { Pos } from './Pos';
 
-type GridElement = 'Empty' | 'Start' | 'End' | 'Block' | 'Path';
+type GridElement = 'Empty' | 'Start' | 'End' | 'Block' | 'Path' | 'Visited';
 
 export class Grid {
   private mtr: GridElement[][] = [];
@@ -63,13 +63,13 @@ export class Grid {
     return false;
   }
 
-  clearPath(): void {
+  clearPathAndVisited(): void {
     const [rows, cols] = this.dims();
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
         const el = this.at(i, j);
 
-        if (el === 'Path') {
+        if (el === 'Path' || el === 'Visited') {
           this.set(i, j, 'Empty');
         }
       }
@@ -93,6 +93,7 @@ export class Grid {
       End: 'E',
       Block: 'B',
       Path: 'P',
+      Visited: 'V',
       Empty: '',
     };
     return map[el];
