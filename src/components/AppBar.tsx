@@ -64,7 +64,10 @@ function AppBar(): React.ReactElement {
       <div className="flex items-center ">
         <div className="flex items-center space-x-2">
           <span>Algorithm:</span>
-          <Select onValueChange={(val: TAlgorithm) => ctx.setAlgorithm(val)}>
+          <Select
+            onValueChange={(val: TAlgorithm) => ctx.setAlgorithm(val)}
+            value={ctx.algorithm}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Algorithm" />
             </SelectTrigger>
