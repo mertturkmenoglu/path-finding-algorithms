@@ -188,7 +188,7 @@ export function dfs(g: Grid): void {
         g.set(nr, c + (nc > c ? 1 : -1), 'Empty');
       } else {
         // Same column
-        g.set(nr + (r > r ? 1 : -1), nc, 'Empty');
+        g.set(r + (nr > r ? 1 : -1), nc, 'Empty');
       }
 
       g.set(nr, nc, 'Visited');

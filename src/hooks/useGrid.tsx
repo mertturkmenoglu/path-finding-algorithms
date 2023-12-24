@@ -10,8 +10,11 @@ export function useGrid(resolution: number) {
   useEffect(() => {
     const el = document.getElementById('grid-start');
     const top = el ? el.offsetTop + resolution : 100;
-    const rows = Math.floor((height - top) / resolution);
-    const cols = Math.floor(width / resolution);
+    let rows = Math.floor((height - top) / resolution);
+    let cols = Math.floor(width / resolution);
+
+    rows = rows % 2 !== 0 ? rows : rows - 1;
+    cols = cols % 2 !== 0 ? cols : cols - 1;
 
     if (rows > 0 && cols > 0) {
       g.init(rows, cols, 'Empty');
